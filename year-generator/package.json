@@ -1,0 +1,20 @@
+{
+  "name": "workflowy-year-generator",
+  "version": "0.0.1",
+  "description": "Generate a simple HTML list for the given where each list item is a month, which in itself is a list where each list item is a week, which in itself is a list where each list item is a day",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "workflowy"
+  ],
+  "author": "Harm te Molder",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "handlebars": "^4.1.1",
+    "moment": "^2.24.0"
+  }
+}

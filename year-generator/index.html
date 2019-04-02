@@ -1,0 +1,31 @@
+<html>
+<head>
+  <style>
+    input[type=submit].link {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      display: inline;
+      font: inherit;
+      padding: 0;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <form action="/" method="post">
+    <h1>WorkFlowy Year Generator</h1>
+    <ul>
+      <li>Generate a list for the year <input type="number" name="year" value="2019" /></li>
+      <li>Ordered with
+        <select name="order">
+          <option value="descending">December 31st</option>
+          <option value="ascending">January 1st</option>
+        </select>
+         at the top of the list</li>
+      <li><input type="submit" class="link" value="Generate" /></li>
+    </ul>
+  </form>
+</body>
+</html>
