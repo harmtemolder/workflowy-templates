@@ -1,0 +1,52 @@
+{
+  "days": {
+    "dutch": {
+      "day-name-1": "maandag",
+      "day-name-2": "dinsdag",
+      "day-name-3": "woensdag",
+      "day-name-4": "donderdag",
+      "day-name-5": "vrijdag",
+      "day-name-6": "zaterdag",
+      "day-name-7": "zondag"
+    },
+    "english": {
+      "day-name-1": "monday",
+      "day-name-2": "tuesday",
+      "day-name-3": "wednesday",
+      "day-name-4": "thursday",
+      "day-name-5": "friday",
+      "day-name-6": "saturday",
+      "day-name-7": "sunday"
+    }
+  },
+  "months": {
+    "dutch": {
+      "month-name-0": "januari",
+      "month-name-1": "februari",
+      "month-name-2": "maart",
+      "month-name-3": "april",
+      "month-name-4": "mei",
+      "month-name-5": "juni",
+      "month-name-6": "juli",
+      "month-name-7": "augustus",
+      "month-name-8": "september",
+      "month-name-9": "oktober",
+      "month-name-10": "november",
+      "month-name-11": "december"
+    },
+    "english": {
+      "month-name-0": "january",
+      "month-name-1": "february",
+      "month-name-2": "march",
+      "month-name-3": "april",
+      "month-name-4": "may",
+      "month-name-5": "june",
+      "month-name-6": "july",
+      "month-name-7": "august",
+      "month-name-8": "september",
+      "month-name-9": "october",
+      "month-name-10": "november",
+      "month-name-11": "december"
+    }
+  }
+}

@@ -1,31 +1,110 @@
 <html>
+
 <head>
-  <style>
-    input[type=submit].link {
-      background: none;
-      border: none;
-      color: inherit;
-      cursor: pointer;
-      display: inline;
-      font: inherit;
-      padding: 0;
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/form-functions.js"></script>
 </head>
+
 <body>
   <form action="/" method="post">
     <h1>WorkFlowy Year Generator</h1>
     <ul>
-      <li>Generate a list for the year <input type="number" name="year" value="2019" /></li>
+      <li>Generate a list for
+        <select name="period">
+          <option value="full-year" {{#equals period "full-year"}}selected{{/equals}}>an entire year,</option>
+          <option value="custom" {{#equals period "custom"}}selected{{/equals}}>a time period I want to set myself,</option>
+        </select>
+        <br />
+        <ul>
+          <li id="period-full-year" {{#equals period "custom"}}class="disabled"{{/equals}}>namely <input type="number" name="year" value="{{year}}" {{#equals period "custom"}}disabled{{/equals}}/></li>
+          <li id="period-custom" {{#equals period "full-year"}}class="disabled"{{/equals}}>namely from
+            <input type="date" name="from-date" value="{{from-date}}" {{#equals period "full-year"}}disabled{{/equals}}>
+            up to and including
+            <input type="date" name="to-date" value="{{to-date}}" {{#equals period "full-year"}}disabled{{/equals}}>
+          </li>
+        </ul>
+      </li>
       <li>Ordered with
         <select name="order">
-          <option value="descending">December 31st</option>
-          <option value="ascending">January 1st</option>
+          <option value="descending" {{#equals order "descending"}}selected{{/equals}}>the last date, e.g. December 31st,</option>
+          <option value="ascending" {{#equals order "ascending"}}selected{{/equals}}>the first date, e.g. January 1st,</option>
         </select>
-         at the top of the list</li>
+        at the top of the list</li>
+      <li>With the month names
+        <select name="month-case">
+          <option value="upper" {{#equals month-case "upper"}}selected{{/equals}}>UPPER CASE</option>
+          <option value="lower" {{#equals month-case "lower"}}selected{{/equals}}>lower case</option>
+          <option value="proper" {{#equals month-case "proper"}}selected{{/equals}}>Proper Case</option>
+        </select>
+        and in
+        <select name="month-language">
+          <option value="english" {{#equals month-language "english"}}selected{{/equals}}>English</option>
+          <option value="dutch" {{#equals month-language "dutch"}}selected{{/equals}}>Dutch</option>
+          <option value="custom" {{#equals month-language "custom"}}selected{{/equals}}>some other way</option>
+        </select>
+        ,
+        <select name="month-number">
+          <option value="true" {{#equals month-number "true"}}selected{{/equals}}>with</option>
+          <option value="false" {{#equals month-number "false"}}selected{{/equals}}>without</option>
+        </select>
+         the month's number suffixed to the name, like so:
+        <br />
+        <ul {{#nequals month-language "custom"}}class="disabled"{{/nequals}}>
+          <!-- TODO Disable and prefill this input when selecting language -->
+          <li><input type="text" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+        </ul><!-- TODO ook nog een nummer aan de maand toevoegen? -->
+      </li>
+
+      <li>Let weeks start on
+        <select name="week-start">
+          <option value="monday" {{#equals week-start "monday"}}selected{{/equals}}>Monday</option>
+          <option value="sunday" {{#equals week-start "sunday"}}selected{{/equals}}>Sunday</option>
+        </select>
+      , with day names in
+      <select name="day-language">
+        <option value="english" {{#equals day-language "english"}}selected{{/equals}}>English</option>
+        <option value="dutch" {{#equals day-language "dutch"}}selected{{/equals}}>Dutch</option>
+        <option value="custom" {{#equals day-language "custom"}}selected{{/equals}}>some other way</option>
+      </select>
+        and
+        <select name="day-case">
+          <option value="upper" {{#equals day-case "upper"}}selected{{/equals}}>UPPER CASE</option>
+          <option value="lower" {{#equals day-case "lower"}}selected{{/equals}}>lower case</option>
+          <option value="proper" {{#equals day-case "proper"}}selected{{/equals}}>Proper Case</option>
+        </select>
+        ,
+        <select name="day-number">
+          <option value="true" {{#equals day-number "true"}}selected{{/equals}}>with</option>
+          <option value="false" {{#equals day-number "false"}}selected{{/equals}}>without</option>
+        </select>
+        the day's number suffixed to the name, like so:
+        <br />
+        <ul {{#nequals day-language "custom"}}class="disabled"{{/nequals}}>
+          {{#equals week-start "sunday"}}<li><input type="text" name="day-name-7" value="{{day-name-7}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>{{/equals}}
+          <li><input type="text" name="day-name-1" value="{{day-name-1}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="day-name-2" value="{{day-name-2}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="day-name-3" value="{{day-name-3}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="day-name-4" value="{{day-name-4}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="day-name-5" value="{{day-name-5}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
+          <li><input type="text" name="day-name-6" value="{{day-name-6}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
+          {{#equals week-start "monday"}}<li><input type="text" name="day-name-7" value="{{day-name-7}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>{{/equals}}
+        </ul>
+      </li>
       <li><input type="submit" class="link" value="Generate" /></li>
     </ul>
   </form>
 </body>
+
 </html>
