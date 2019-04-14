@@ -1,5 +1,6 @@
 const moment = require("moment");
-const defaultNames = require("./default-names.json")
+const defaultNames = require("./default-names.json");
+const convertCase = require("./process-context.js").convertCase;
 
 // Set default input values, if no context is available
 let context = {
@@ -10,41 +11,23 @@ let context = {
   "order": "descending",
   "month-case": "upper",
   "month-language": "english",
-  "month-number": "true",
+  "month-number": "prefix",
   "week-start": "monday",
   "day-language": "english",
   "day-case": "proper",
-  "day-number": "true"
+  "day-number": "prefix"
 }
 
 // Convert default month names to selected case
 defaultMonthNames = defaultNames["months"][context["month-language"]];
 Object.keys(defaultMonthNames).map(function (key, index) {
-  switch (context["month-case"]) {
-    case "upper":
-      defaultMonthNames[key] = defaultMonthNames[key].toUpperCase();
-      break;
-    case "lower":
-      defaultMonthNames[key] = defaultMonthNames[key].toLowerCase();
-      break;
-    case "proper":
-      defaultMonthNames[key] = defaultMonthNames[key].charAt(0).toUpperCase() + defaultMonthNames[key].toLowerCase().slice(1);
-  }
+  defaultMonthNames[key] = convertCase(defaultMonthNames[key], context["month-case"]);
 });
 
 // Convert default day names to selected case
 defaultDayNames = defaultNames["days"][context["day-language"]];
 Object.keys(defaultDayNames).map(function (key, index) {
-  switch (context["day-case"]) {
-    case "upper":
-      defaultDayNames[key] = defaultDayNames[key].toUpperCase();
-      break;
-    case "lower":
-      defaultDayNames[key] = defaultDayNames[key].toLowerCase();
-      break;
-    case "proper":
-      defaultDayNames[key] = defaultDayNames[key].charAt(0).toUpperCase() + defaultDayNames[key].toLowerCase().slice(1);
-  }
+  defaultDayNames[key] = convertCase(defaultDayNames[key], context["day-case"]);
 });
 
 // Add default month and day names to context and export

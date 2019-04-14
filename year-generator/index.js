@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const Handlebars = require("handlebars");
 const yearGenerator = require("./year-generator.js")
 const defaults = require("./defaults.js")
+const processContext = require("./process-context.js")
 
 const app = express();
 const port = 3000;
@@ -45,48 +46,16 @@ var htmlTemplate = Handlebars.compile(htmlSource);
 
 app.get('/', function (req, res) {
   console.log("workflowy-year-generator: Serving HTML as response to GET request...");
-  res.send(htmlTemplate(defaults["context"]));
+  const context = processContext.process(defaults["context"]);
+  res.send(htmlTemplate(context));
 });
-
-function getNamesFromContext(context) {
-  const weekdayPattern = /^day\-name\-(\d)$/;
-  const monthPattern = /^month\-name\-(\d{1,2})$/;
-
-  let dayNames = {};
-  let monthNames = {};
-
-  for (let v in context) {
-    let dayNumberMatch = weekdayPattern.exec(v);
-    let monthNumberMatch = monthPattern.exec(v);
-
-    if (dayNumberMatch !== null) {
-      // Note that moment.isoWeekday() returns 1 for Monday and 7 for Sunday
-      dayNames[dayNumberMatch[1]] = context[v];
-    } else if (monthNumberMatch !== null) {
-      monthNames[monthNumberMatch[1]] = context[v];
-    }
-  }
-
-  return {
-    "day": dayNames,
-    "month": monthNames
-  }
-}
 
 app.post('/', function (req, res) {
   console.log("workflowy-year-generator: Handling POST request...");
-  const context = req.body;
-  const namesFromContext = getNamesFromContext(context);
+  let context = processContext.process(req.body);
 
-  // Generate the year and serve it as response to the POST request
-  generatedYear = yearGenerator.generateYear(
-    context["year"],
-    context["order"],
-    namesFromContext["month"],
-    namesFromContext["day"]
-  )
-
-  // TODO append generatedYear to htmlTemplate
+  // Generate the HTML list for the selected period and add it to context
+  context = yearGenerator.generateYear(context);
 
   res.send(htmlTemplate(context));
 });

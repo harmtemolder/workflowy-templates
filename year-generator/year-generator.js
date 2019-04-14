@@ -5,21 +5,21 @@ const moment = require("moment");
 
 const entities = new Entities();
 
-function generateYear(year, order, monthNames, dayNames) {
+function generateYear(context) {
   // This function takes a year (integer) and order (either "ascending" or
   // "descending") and returns an HTML list of the year, its months, weeks and
   // days
 
-  function generateDateList(year, ascending) {
+  function generateDateList(fromDateString, toDateString, ascending) {
     // This function takes a year and a boolean and returns a list of all dates
     // in that year, ordered ascendingly if the boolean is true
 
-    const firstDate = moment.utc(year + "-01-01");
-    const lastDate = firstDate.clone().add(1, "year");
+    const fromDate = moment.utc(fromDateString);
+    const toDate = moment.utc(toDateString).add(1, "day");
 
     let dateList = [];
 
-    for (let d = firstDate; d < lastDate; d.add(1, "day")) {
+    for (let d = fromDate; d < toDate; d.add(1, "day")) {
       dateList.push(new Date(d));
     }
 
@@ -58,8 +58,6 @@ function generateYear(year, order, monthNames, dayNames) {
       lastDay = date.clone().endOf("month").format("DD");
     }
 
-    debugger;
-
     if (firstDay === lastDay) {
       return firstDay;
     } else {
@@ -67,7 +65,7 @@ function generateYear(year, order, monthNames, dayNames) {
     }
   }
 
-  function dateListToNestedObject(dateList, monthNames, dayNames) {
+  function dateListToNestedObject(dateList, monthNames, monthNumber, dayNames, dayNumber) {
     // This function takes a list of dates and converts that to a nested object
     // by year, month, week and day
 
@@ -81,9 +79,17 @@ function generateYear(year, order, monthNames, dayNames) {
       if (!(dYear in outputObject)) {
         outputObject[dYear] = {};
       }
+      // TODO Add the functionality for a period that spans multiple years
 
       // Add current date's month to the year, if not already there
-      const dMonth = monthNames[date.month()];
+      let dMonth = monthNames[date.month()];
+
+      if (monthNumber === "prefix") {
+        dMonth = date.format("MM") + " - " + dMonth;
+      } else if (monthNumber === "suffix") {
+        dMonth = dMonth + " - " + date.format("MM");
+      }
+
       if (!(dMonth in outputObject[dYear])) {
         outputObject[dYear][dMonth] = {};
       }
@@ -95,7 +101,14 @@ function generateYear(year, order, monthNames, dayNames) {
       }
 
       // Add current date's day to the month
-      const dDay = dayNames[date.isoWeekday()];
+      let dDay = dayNames[date.isoWeekday()];
+
+      if (dayNumber === "prefix") {
+        dDay = date.format("DD") + " - " + dDay;
+      } else if (dayNumber === "suffix") {
+        dDay = dDay + " - " + date.format("DD");
+      }
+
       outputObject[dYear][dMonth][dWeek][dDay] = {};
     }
 
@@ -106,23 +119,39 @@ function generateYear(year, order, monthNames, dayNames) {
     let outputHtml = "";
 
     Object.keys(inputObject).forEach(function (k) {
-        if (typeof inputObject[k] == "object" && inputObject[k] !== null) {
-          outputHtml += "<li>" + entities.encode(k) + "<ul>";
-          outputHtml += objectToHtmlList(inputObject[k]);
-          outputHtml += "</ul></li>";
-        } else {
-          outputHtml += "<li>" + k + " : " + inputObject[k] + "</li>";
-        }
-      });
+      if (typeof inputObject[k] == "object" && inputObject[k] !== null) {
+        outputHtml += "<li>" + entities.encode(k) + "<ul>";
+        outputHtml += objectToHtmlList(inputObject[k]);
+        outputHtml += "</ul></li>";
+      } else {
+        outputHtml += "<li>" + k + " : " + inputObject[k] + "</li>";
+      }
+    });
     return outputHtml;
   }
 
-  const horizontalLine = "<hr>\n"
-  const dateList = generateDateList(year, (order === "ascending"));
-  const nestedObject = dateListToNestedObject(dateList, monthNames, dayNames);
-  const htmlList = objectToHtmlList(nestedObject);
+  const dateList = generateDateList(
+    context["from-date"],
+    context["to-date"],
+    (context["order"] === "ascending")
+  );
 
-  return horizontalLine + htmlList;
+  const nestedObject = dateListToNestedObject(
+    dateList,
+    context["month-names"],
+    context["month-number"],
+    context["day-names"],
+    context["day-number"]
+  );
+
+  const htmlList = objectToHtmlList(nestedObject)
+
+  // Add the resulting HTML list to context to be used within the HTML template
+  context = Object.assign(context, {
+    "html-list": "<li>--------------------</li><li><a href='#' class='select-link' data-selector='#output'>Select output</a></li><li>--------------------</li><span id='output'>" + htmlList + "</span>"
+  });
+
+  return context;
 }
 
 // Export the generateYear function above so that other modules can use them

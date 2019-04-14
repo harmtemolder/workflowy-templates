@@ -4,8 +4,11 @@ body {
   font-size: 15px;
   font-weight: normal;
   color: rgb(255, 255, 255);
-  user-select: none;
   background: rgb(42, 49, 53);
+}
+
+form {
+  margin: 0;
 }
 
 input, select {
@@ -25,7 +28,7 @@ input:disabled, select:disabled, .disabled {
   text-decoration: line-through;
 }
 
-input[type=submit].link {
+a, input[type=submit].link {
   background: none;
   border: none;
   color: inherit;
