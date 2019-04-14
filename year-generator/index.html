@@ -13,7 +13,7 @@
       <li>Generate a list for
         <select name="period">
           <option value="full-year" {{#equals period "full-year"}}selected{{/equals}}>an entire year,</option>
-          <option value="custom" {{#equals period "custom"}}selected{{/equals}}>a time period I want to set myself,</option>
+          <option value="custom" {{#equals period "custom"}}selected{{/equals}} disabled>a time period I want to set myself, @workinprogress</option>
         </select>
         <br />
         <ul>
@@ -22,6 +22,7 @@
             <input type="date" name="from-date" value="{{from-date}}" {{#equals period "full-year"}}disabled{{/equals}}>
             up to and including
             <input type="date" name="to-date" value="{{to-date}}" {{#equals period "full-year"}}disabled{{/equals}}>
+             @workinprogress
           </li>
         </ul>
       </li>
@@ -52,25 +53,25 @@
         <br />
         <ul {{#nequals month-language "custom"}}class="disabled"{{/nequals}}>
           <!-- TODO Disable and prefill this input when selecting language -->
-          <li><input type="text" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}}disabled{{/nequals}}></li>
+          <li>{{#equals month-number "prefix"}}01 - {{/equals}}<input type="text" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 01{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}02 - {{/equals}}<input type="text" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 02{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}03 - {{/equals}}<input type="text" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 03{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}04 - {{/equals}}<input type="text" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 04{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}05 - {{/equals}}<input type="text" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 05{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}06 - {{/equals}}<input type="text" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 06{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}07 - {{/equals}}<input type="text" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 07{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}08 - {{/equals}}<input type="text" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 08{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}09 - {{/equals}}<input type="text" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 09{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}10 - {{/equals}}<input type="text" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 10{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}11 - {{/equals}}<input type="text" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 11{{/equals}}</li>
+          <li>{{#equals month-number "prefix"}}12 - {{/equals}}<input type="text" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 12{{/equals}}</li>
         </ul><!-- TODO ook nog een nummer aan de maand toevoegen? -->
       </li>
 
       <li>Let weeks start on
         <select name="week-start">
           <option value="monday" {{#equals week-start "monday"}}selected{{/equals}}>Monday</option>
-          <option value="sunday" {{#equals week-start "sunday"}}selected{{/equals}}>Sunday</option>
+          <option value="sunday" {{#equals week-start "sunday"}}selected{{/equals}} disabled>Sunday @workinprogress</option>
         </select>
       , with day names in
       <select name="day-language">
@@ -93,14 +94,14 @@
         the day's number</span>
         <br />
         <ul {{#nequals day-language "custom"}}class="disabled"{{/nequals}}>
-          {{#equals week-start "sunday"}}<li><input type="text" name="day-name-7" value="{{day-name-7}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>{{/equals}}
-          <li><input type="text" name="day-name-1" value="{{day-name-1}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="day-name-2" value="{{day-name-2}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="day-name-3" value="{{day-name-3}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="day-name-4" value="{{day-name-4}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="day-name-5" value="{{day-name-5}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
-          <li><input type="text" name="day-name-6" value="{{day-name-6}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>
-          {{#equals week-start "monday"}}<li><input type="text" name="day-name-7" value="{{day-name-7}}" {{#nequals day-language "custom"}}disabled{{/nequals}}></li>{{/equals}}
+          {{#equals week-start "sunday"}}<li>{{#equals day-number "prefix"}}07 - {{/equals}}<input type="text" name="day-name-7" value="{{day-name-7}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 07{{/equals}}</li>{{/equals}}
+          <li>{{#equals day-number "prefix"}}08 - {{/equals}}<input type="text" name="day-name-1" value="{{day-name-1}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 08{{/equals}}</li>
+          <li>{{#equals day-number "prefix"}}09 - {{/equals}}<input type="text" name="day-name-2" value="{{day-name-2}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 09{{/equals}}</li>
+          <li>{{#equals day-number "prefix"}}10 - {{/equals}}<input type="text" name="day-name-3" value="{{day-name-3}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 10{{/equals}}</li>
+          <li>{{#equals day-number "prefix"}}11 - {{/equals}}<input type="text" name="day-name-4" value="{{day-name-4}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 11{{/equals}}</li>
+          <li>{{#equals day-number "prefix"}}12 - {{/equals}}<input type="text" name="day-name-5" value="{{day-name-5}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 12{{/equals}}</li>
+          <li>{{#equals day-number "prefix"}}13 - {{/equals}}<input type="text" name="day-name-6" value="{{day-name-6}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 13{{/equals}}</li>
+          {{#equals week-start "monday"}}<li>{{#equals day-number "prefix"}}14 - {{/equals}}<input type="text" name="day-name-7" value="{{day-name-7}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 14{{/equals}}</li>{{/equals}}
         </ul>
       </li>
       <li><input type="submit" class="link" value="Generate" /></li>
