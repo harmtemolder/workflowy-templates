@@ -1,6 +1,8 @@
 const moment = require("moment");
-const defaultNames = require("./default-names.json");
-const convertCase = require("./process-context.js").convertCase;
+const path = require("path");
+
+const defaultNames = require(path.join(__dirname, "default-names.json"));
+const convertCase = require(path.join(__dirname, "process-context.js")).convertCase;
 
 // Set default input values, if no context is available
 let context = {
