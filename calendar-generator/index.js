@@ -5,7 +5,7 @@ const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const Handlebars = require("handlebars");
-const yearGenerator = require("./year-generator.js")
+const calendarGenerator = require("./calendar-generator.js")
 const defaults = require("./defaults.js")
 const processContext = require("./process-context.js")
 
@@ -40,26 +40,26 @@ Handlebars.registerHelper('nequals', function (v1, v2, options) {
 
 // Read the form's HTML from file and compile with Handlebars
 const htmlFile = "./index.html";
-console.log("workflowy-year-generator: Reading HTML from file (" + htmlFile + ")...");
+console.log("workflowy-calendar-generator: Reading HTML from file (" + htmlFile + ")...");
 let htmlSource = fs.readFileSync(htmlFile, "utf-8");
 var htmlTemplate = Handlebars.compile(htmlSource);
 
 app.get('/', function (req, res) {
-  console.log("workflowy-year-generator: Serving HTML as response to GET request...");
+  console.log("workflowy-calendar-generator: Serving HTML as response to GET request...");
   const context = processContext.process(defaults["context"]);
   res.send(htmlTemplate(context));
 });
 
 app.post('/', function (req, res) {
-  console.log("workflowy-year-generator: Handling POST request...");
+  console.log("workflowy-calendar-generator: Handling POST request...");
   let context = processContext.process(req.body);
 
   // Generate the HTML list for the selected period and add it to context
-  context = yearGenerator.generateYear(context);
+  context = calendarGenerator.generateYear(context);
 
   res.send(htmlTemplate(context));
 });
 
 app.listen(port, function () {
-  console.log(`workflowy-year-generator: Listening on port ${port}...`);
+  console.log(`workflowy-calendar-generator: Listening on port ${port}...`);
 });

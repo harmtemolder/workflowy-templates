@@ -1,4 +1,4 @@
-// year-generator.js
+// calendar-generator.js
 
 const Entities = require("html-entities").AllHtmlEntities;
 const moment = require("moment");
