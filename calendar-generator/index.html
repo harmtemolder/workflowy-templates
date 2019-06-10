@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="/styles/style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="/scripts/form-functions.js"></script>
+  <script src="/scripts/modal-functions.js"></script>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="mask-icon" href="icon.svg" color="rgb(0, 102, 153)">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -128,6 +129,30 @@
       {{{html-list}}}
       {{/if}}
     </ul>
+  </div>
+  <div id="modal-overlay">
+    <div id="modal-darken"></div>
+    <div id="warning-modal">
+      <div class="modal-content">
+        <div class="modal-close">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-linecap="round" stroke="rgb(92, 96, 98)">
+            <line x1="1" y1="1" x2="19" y2="19"></line>
+            <line x1="19" y1="1" x2="1" y2="19"></line>
+          </svg>
+          <div class="modal-close-hover"></div>
+        </div>
+        <h1>Read this first!</h1>
+        <p>Using this calendar generator to fill your WorkFlowy quickly goes towards the monthly quota of a free account.</p>
+        <p>Which one of these applies to you?</p>
+        <p><a href="#" class="modal-button new-user"><strong>I don't have a WorkFlowy account yet</strong>, but appreciate the 100 extra free items I get every month when I sign up using the following referral link.</a></p>
+        <p class="centered"><a href="https://workflowy.com/invite/6b9f5645.lnx" target="_blank">my referral link</a></p>
+        <p><a href="#" class="modal-button free-user"><strong>I have a free account</strong>, but will keep my monthly quota in check by selecting a smaller period of time. I might even share my own WorkFlowy referral link to get more free items per month.</a></p>
+        <p class="centered"><a href="https://workflowy.com/referrals/" target="_blank">your referral link</a></p>
+        <p><a href="#" class="modal-button pro-user"><strong>I have a pro account</strong>, or will get one when I reach my monthly quota, so don't worry about me.</a></p>
+        <p>In any case, I won't bother you again: This popup will only be shown once.</p>
+        <p class="signed">&mdash; <a href="https://twitter.com/harmtemolder" target="_blank">Harm te Molder</a></p>
+      </div>
+    </div>
   </div>
 </body>
 
