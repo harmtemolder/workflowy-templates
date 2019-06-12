@@ -120,14 +120,14 @@ input[type=submit].link:hover {
   left: 0px;
   right: 0px;
   bottom: 0px;
-  display: flex;
+  display: none;
   align-items: flex-start;
   justify-content: center;
   -webkit-box-pack: center;
   z-index: 2;
 }
 
-.modal-darken {
+#modal-darken {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -141,6 +141,7 @@ input[type=submit].link:hover {
   opacity: 0.2;
   background: rgb(0, 0, 0);
   transition: opacity 300ms ease 0s;
+  z-index: 3;
 }
 
 #warning-modal {
@@ -163,6 +164,7 @@ input[type=submit].link:hover {
   border-color: $close;
   // border-image: initial;
   transition: transform 300ms ease 0s, opacity 300ms ease 0s;
+  z-index: 4;
 }
 
 .modal-close {
