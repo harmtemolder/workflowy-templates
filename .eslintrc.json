@@ -16,6 +16,7 @@
   "rules": {
     "no-plusplus": ["error", {
       "allowForLoopAfterthoughts": true
-    }]
+    }],
+    "prefer-arrow-callback": "off"
   }
 }

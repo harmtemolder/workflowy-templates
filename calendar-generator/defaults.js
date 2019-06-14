@@ -21,13 +21,13 @@ let context = {
 
 // Convert default month names to selected case
 const defaultMonthNames = defaultNames.months[context['month-language']];
-Object.keys(defaultMonthNames).map(function (key) {
+Object.keys(defaultMonthNames).map(function convertMonthCase(key) {
   defaultMonthNames[key] = processContext.convertCase(defaultMonthNames[key], context['month-case']);
 });
 
 // Convert default day names to selected case
 const defaultDayNames = defaultNames.days[context['day-language']];
-Object.keys(defaultDayNames).map(function (key) {
+Object.keys(defaultDayNames).map(function convertDayCase(key) {
   defaultDayNames[key] = processContext.convertCase(defaultDayNames[key], context['day-case']);
 });
 

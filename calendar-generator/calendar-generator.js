@@ -1,18 +1,19 @@
 // calendar-generator.js
+/* eslint no-param-reassign: "off" */
 
-const Entities = require('html-entities').AllHtmlEntities;
 const moment = require('moment');
 
-const entities = new Entities();
-
-function generateYear(context) {
-  // This function takes a year (integer) and order (either 'ascending' or
-  // 'descending') and returns an HTML list of the year, its months, weeks and
-  // days
+function generateCalendar(context) {
+  // This function takes a start and end date (both "YYYY-MM-DD"), order (either
+  // "ascending" or "descending") and whether to include months and weeks in the
+  // nesting. All this input should be part of context. It returns an HTML list
+  // of the year(s), its months (if requested), weeks (if requested) and days.
+  // All formatted according to what's requested in the context
 
   function generateDateList(fromDateString, toDateString, ascending) {
-    // This function takes a year and a boolean and returns a list of all dates
-    // in that year, ordered ascendingly if the boolean is true
+    // This function takes a from and to date and a boolean and returns a list
+    // of all dates between those dates, including the dates themselves, ordered
+    // ascendingly if the boolean is true and descendingly if it is not
 
     const fromDate = moment.utc(fromDateString);
     const toDate = moment.utc(toDateString).add(1, 'day');
@@ -30,12 +31,12 @@ function generateYear(context) {
     return dateList;
   }
 
-  function getWeekString(date) {
+  function getWeekString(date, separator) {
     // This function takes a date and returns a string of two numbers (e.g.
     // '01-07') where (1) the first is the date's week's Monday, or '01' if the
     // Monday doesn't fall in the date's month and (2) the second is the date's
     // week's Sunday, or the last day of the month if the Sunday doesn't fall in
-    // the date's month
+    // the date's month. The two numers are separated by the given separator
 
     // Get current date's week's Monday and Sunday
     const monday = date.clone().startOf('isoWeek');
@@ -62,71 +63,114 @@ function generateYear(context) {
       return firstDay;
     }
 
-    return `${firstDay}-${lastDay}`;
+    return `${firstDay}${separator}${lastDay}`;
   }
 
-  function dateListToNestedObject(dateList, monthNames, monthNumber, dayNames, dayNumber) {
-    // This function takes a list of dates and converts that to a nested object
-    // by year, month, week and day
+  function generateDay(date, dayNames, dayNumber, daySeparator) {
+    const dayPrefix = (dayNumber === 'prefix' ? `${date.format('DD')}${daySeparator}` : '');
+    const day = dayNames[date.isoWeekday()];
+    const daySuffix = (dayNumber === 'suffix' ? `${daySeparator}${date.format('DD')}` : '');
 
-    const outputObject = {};
+    return `<li>${dayPrefix}${day}${daySuffix}</li>`;
+  }
+
+  function generateWeek(date, weekNumber, weekSeparator) {
+    if (weekNumber) return `<li>${date.week()}<ul>`;
+    return `<li>${getWeekString(date, weekSeparator)}<ul>`;
+  }
+
+  function generateMonth(date, monthNames, monthNumber, monthSeparator) {
+    const monthPrefix = (monthNumber === 'prefix' ? `${date.format('MM')}${monthSeparator}` : '');
+    const month = monthNames[date.month()];
+    const monthSuffix = (monthNumber === 'suffix' ? `${monthSeparator}${date.format('MM')}` : '');
+
+    return `<li>${monthPrefix}${month}${monthSuffix}<ul>`;
+  }
+
+  function generateYear(date) {
+    return `<li>${date.year()}<ul>`;
+  }
+
+  function closeList(numLevels) {
+    return '</li></ul>'.repeat(numLevels);
+  }
+
+  function dateListToHtml(dateList, includeMonths, monthNames, monthNumber,
+    monthSeparator, includeWeeks, weekNumber, weekSeparator, dayNames,
+    dayNumber, daySeparator) {
+    let outputHtml = '';
+    let previousDate;
 
     for (let d = 0; d < dateList.length; d++) {
       const date = moment(dateList[d]);
 
-      // Add current date's year to the object, if not already there
-      const dYear = date.year();
-      if (!(dYear in outputObject)) {
-        outputObject[dYear] = {};
+      // Start with the lowest level of the nest, the day
+      let dayHtml = generateDay(date, dayNames, dayNumber, daySeparator);
+
+      // Set up the very first date with all requested levels
+      if (previousDate == null || (previousDate.year() !== date.year())) {
+        // Add opening of week
+        if (includeWeeks) {
+          dayHtml = `${generateWeek(date, weekNumber, weekSeparator)}${dayHtml}`;
+        }
+
+        // Add opening of month
+        if (includeMonths) {
+          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthSeparator)}${dayHtml}`;
+        }
+
+        // Add opening of year
+        dayHtml = `${generateYear(date)}${dayHtml}`;
+
+        if (previousDate != null) {
+          // Close previous year, month and week, whichever applies
+          if (includeMonths && includeWeeks) {
+            dayHtml = `${closeList(3)}${dayHtml}`;
+          } else {
+            // Since either includeMonths or includeWeeks should be true, there will
+            // be a minimum of two open lists to close
+            dayHtml = `${closeList(2)}${dayHtml}`;
+          }
+        }
+      } else if (includeMonths && (previousDate.month() !== date.month())) {
+        // TODO What if includeMonths === false and weekNumber === false?
+        if (includeWeeks) {
+          // Add opening of new week
+          dayHtml = `${generateWeek(date, weekNumber, weekSeparator)}${dayHtml}`;
+
+          // Add opening of new month
+          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthSeparator)}${dayHtml}`;
+
+          // Add closing of previous month and week
+          dayHtml = `${closeList(2)}${dayHtml}`;
+        } else {
+          // Add opening of new month
+          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthSeparator)}${dayHtml}`;
+
+          // Add closing of previous month
+          dayHtml = `${closeList(1)}${dayHtml}`;
+        }
+      } else if (includeWeeks && ((previousDate.isoWeekday() + date.isoWeekday()) === 8)) {
+        // Add opening of new week
+        dayHtml = `${generateWeek(date, weekNumber, weekSeparator)}${dayHtml}`;
+
+        // Add closing of previous week
+        dayHtml = `${closeList(1)}${dayHtml}`;
       }
-      // TODO Add the functionality for a period that spans multiple years
 
-      // Add current date's month to the year, if not already there
-      let dMonth = monthNames[date.month()];
-
-      if (monthNumber === 'prefix') {
-        dMonth = `${date.format('MM')} - ${dMonth}`;
-      } else if (monthNumber === 'suffix') {
-        dMonth = `${dMonth} - ${date.format('MM')}`;
-      }
-
-      if (!(dMonth in outputObject[dYear])) {
-        outputObject[dYear][dMonth] = {};
-      }
-
-      // Add current date's week string to the month, if not already there
-      const dWeek = getWeekString(date);
-      if (!(dWeek in outputObject[dYear][dMonth])) {
-        outputObject[dYear][dMonth][dWeek] = {};
-      }
-
-      // Add current date's day to the month
-      let dDay = dayNames[date.isoWeekday()];
-
-      if (dayNumber === 'prefix') {
-        dDay = `${date.format('DD')} - ${dDay}`;
-      } else if (dayNumber === 'suffix') {
-        dDay = `${dDay} - ${date.format('DD')}`;
-      }
-
-      outputObject[dYear][dMonth][dWeek][dDay] = {};
+      outputHtml += dayHtml;
+      previousDate = date;
     }
 
-    return outputObject;
-  }
+    // Close the last week, month and year, whichever applies
+    if (includeMonths && includeWeeks) {
+      outputHtml += closeList(3);
+    } else {
+      // Since either includeMonths or includeWeeks should be true, there will
+      // be a minimum of two open lists to close
+      outputHtml += closeList(2);
+    }
 
-  function objectToHtmlList(inputObject) {
-    let outputHtml = '';
-
-    Object.keys(inputObject).forEach((k) => {
-      if (typeof inputObject[k] === 'object' && inputObject[k] !== null) {
-        outputHtml += `<li>${entities.encode(k)}<ul>`;
-        outputHtml += objectToHtmlList(inputObject[k]);
-        outputHtml += '</ul></li>';
-      } else {
-        outputHtml += `<li>${k}:${inputObject[k]}</li>`;
-      }
-    });
     return outputHtml;
   }
 
@@ -136,15 +180,19 @@ function generateYear(context) {
     (context.order === 'ascending'),
   );
 
-  const nestedObject = dateListToNestedObject(
+  const htmlList = dateListToHtml(
     dateList,
-    context['month-names'],
-    context['month-number'],
-    context['day-names'],
-    context['day-number'],
+    false, // includeMonths
+    context['month-names'], // monthNames
+    context['month-number'], // monthNumber
+    ' ', // monthSeparator
+    true, // includeWeeks
+    false, // weekNumber
+    '-', // weekSeparator
+    context['day-names'], // dayNames
+    context['day-number'], // dayNumber
+    ' ', // daySeparator
   );
-
-  const htmlList = objectToHtmlList(nestedObject);
 
   // Add the resulting HTML list to context to be used within the HTML template
   return Object.assign(context, {
@@ -152,5 +200,5 @@ function generateYear(context) {
   });
 }
 
-// Export the generateYear function above so that other modules can use them
-module.exports.generateYear = generateYear;
+// Export the generateCalendar function above so that other modules can use it
+module.exports.generateCalendar = generateCalendar;
