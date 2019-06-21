@@ -182,11 +182,11 @@ function generateCalendar(context) {
 
   const htmlList = dateListToHtml(
     dateList,
-    false, // includeMonths
+    (context['level-for-months'] === 'true'), // includeMonths
     context['month-names'], // monthNames
     context['month-number'], // monthNumber
     ' ', // monthSeparator
-    true, // includeWeeks
+    (context['level-for-weeks'] === 'true'), // includeWeeks
     false, // weekNumber
     '-', // weekSeparator
     context['day-names'], // dayNames

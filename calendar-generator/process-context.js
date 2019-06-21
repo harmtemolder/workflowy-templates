@@ -1,4 +1,18 @@
+const defaultContext = require('./defaults.js');
 const defaultNames = require('./default-names.json');
+
+function fillGaps(context) {
+  let filledContext = context;
+
+  // Because checkboxes don't return anything if they're unchecked, re-add them
+  filledContext['level-for-months'] = filledContext['level-for-months'] || 'false';
+  filledContext['level-for-weeks'] = filledContext['level-for-weeks'] || 'false';
+
+  // Then fill any gaps based on the defaults
+  filledContext = Object.assign(defaultContext.context, filledContext);
+
+  return filledContext;
+}
 
 function convertCase(inputString, inputCase) {
   // This function takes the context object and converts the month and day names
@@ -28,7 +42,7 @@ function processDayAndMonthNames(context) {
   // Get the default day names for the selected language and write these to context
   if (context['day-language'] !== 'custom') {
     const defaultDayNames = defaultNames.days[context['day-language']];
-    Object.keys(defaultDayNames).map(function (key) {
+    Object.keys(defaultDayNames).forEach(function convertDayNameCase(key) {
       defaultDayNames[key] = convertCase(defaultDayNames[key], context['day-case']);
     });
     outputContext = Object.assign(outputContext, defaultDayNames);
@@ -37,32 +51,26 @@ function processDayAndMonthNames(context) {
   // Get the default month names as well
   if (outputContext['month-language'] !== 'custom') {
     const defaultMonthNames = defaultNames.months[outputContext['month-language']];
-    Object.keys(defaultMonthNames).map(function (key) {
+    Object.keys(defaultMonthNames).forEach(function convertMonthNameCase(key) {
       defaultMonthNames[key] = convertCase(defaultMonthNames[key], context['month-case']);
     });
     outputContext = Object.assign(outputContext, defaultMonthNames);
   }
 
-  const weekdayPattern = /^day-name-(\d)$/;
-  const monthPattern = /^month-name-(\d{1,2})$/;
-
   const dayNames = {};
   const monthNames = {};
 
   // Loop through the context and get all month-name-* and day-name-* variables
-  for (const varName in outputContext) {
-    if (Object.prototype.hasOwnProperty.call(outputContext, varName)) {
+  for (const varName of Object.keys(outputContext)) {
+    const dayNumberMatch = /^day-name-(\d)$/.exec(varName);
+    const monthNumberMatch = /^month-name-(\d{1,2})$/.exec(varName);
 
-      const dayNumberMatch = weekdayPattern.exec(varName);
-      const monthNumberMatch = monthPattern.exec(varName);
-
-      if (dayNumberMatch !== null) {
-        // If the selected variable is a day-name-* variable add it to dayNames
-        dayNames[dayNumberMatch[1]] = outputContext[varName];
-      } else if (monthNumberMatch !== null) {
-        // If the selected variable is a month-name-* variable add it to monthNames
-        monthNames[monthNumberMatch[1]] = outputContext[varName];
-      }
+    if (dayNumberMatch !== null) {
+      // If the selected variable is a day-name-* variable add it to dayNames
+      dayNames[dayNumberMatch[1]] = outputContext[varName];
+    } else if (monthNumberMatch !== null) {
+      // If the selected variable is a month-name-* variable add it to monthNames
+      monthNames[monthNumberMatch[1]] = outputContext[varName];
     }
   }
 
@@ -91,8 +99,14 @@ function setDatesIfNeeded(context) {
 }
 
 function process(context) {
+  let outputContext = context;
+
+  // Fill in gaps in the context (e.g. caused by hidden input fields) based on
+  // the default context
+  outputContext = fillGaps(outputContext);
+
   // Set the to and from dates to the selected year, if period = year
-  let outputContext = setDatesIfNeeded(context);
+  outputContext = setDatesIfNeeded(outputContext);
 
   // And finally add (properly cased) day and month names as objects
   outputContext = processDayAndMonthNames(outputContext);

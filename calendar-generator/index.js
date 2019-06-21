@@ -63,6 +63,8 @@ const htmlTemplate = Handlebars.compile(htmlSource);
 app.get('/', function respondToGet(req, res) {
   console.log('workflowy-calendar-generator: Serving HTML as response to GET request...');
   const context = processContext.process(defaults.context);
+
+  res.set('Content-Security-Policy', "img-src: 'self'");
   res.send(htmlTemplate(context));
 });
 
@@ -70,9 +72,15 @@ app.post('/', function respondToPost(req, res) {
   console.log('workflowy-calendar-generator: Handling POST request...');
   let context = processContext.process(req.body);
 
-  // Generate the HTML list for the selected period and add it to context
-  context = calendarGenerator.generateCalendar(context);
+  if (context.generate === 'false') {
+    // Drop any previously generated calendar from the context
+    context['html-list'] = undefined;
+  } else {
+    // Generate the HTML list for the selected period and add it to context
+    context = calendarGenerator.generateCalendar(context);
+  }
 
+  res.set('Content-Security-Policy', "img-src 'self' data: www.google-analytics.com");
   res.send(htmlTemplate(context));
 });
 

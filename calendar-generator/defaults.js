@@ -10,6 +10,8 @@ let context = {
   'from-date': `${moment().year().toString()}-01-01`,
   'to-date': `${moment().year().toString()}-12-31`,
   order: 'descending',
+  'level-for-months': 'true',
+  'level-for-weeks': 'false',
   'month-case': 'upper',
   'month-language': 'english',
   'month-number': 'prefix',
@@ -21,13 +23,13 @@ let context = {
 
 // Convert default month names to selected case
 const defaultMonthNames = defaultNames.months[context['month-language']];
-Object.keys(defaultMonthNames).map(function convertMonthCase(key) {
+Object.keys(defaultMonthNames).forEach(function convertMonthCase(key) {
   defaultMonthNames[key] = processContext.convertCase(defaultMonthNames[key], context['month-case']);
 });
 
 // Convert default day names to selected case
 const defaultDayNames = defaultNames.days[context['day-language']];
-Object.keys(defaultDayNames).map(function convertDayCase(key) {
+Object.keys(defaultDayNames).forEach(function convertDayCase(key) {
   defaultDayNames[key] = processContext.convertCase(defaultDayNames[key], context['day-case']);
 });
 
