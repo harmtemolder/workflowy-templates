@@ -86,93 +86,83 @@
                 <option value="dutch" {{#equals month-language "dutch"}} selected="selected" {{/equals}}>Dutch</option>
                 <option value="custom" {{#equals month-language "custom"}} selected="selected" {{/equals}}>some other way</option>
               </select>
-              <span {{#equals month-language "custom"}} class="disabled" {{/equals}}>and
-                <select name="month-case" {{#equals month-language "custom"}} disabled="disabled" {{/equals}}>
-                  <option value="upper" {{#equals month-case "upper"}} selected="selected" {{/equals}}>UPPER CASE</option>
-                  <option value="lower" {{#equals month-case "lower"}} selected="selected" {{/equals}}>lower case</option>
-                  <option value="proper" {{#equals month-case "proper"}} selected="selected" {{/equals}}>Proper Case</option>
-                </select>,
-                <select name="month-number" {{#equals month-language "custom"}} disabled="disabled" {{/equals}}>
-                  <option value="prefix" {{#equals month-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
-                  <option value="suffix" {{#equals month-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
-                  <option value="none" {{#equals month-number "none"}} selected="selected" {{/equals}}>without
-                  </option>
-                </select>
-                the month's number</span>
-              <br/>
-              <ul {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                <!-- TODO Disable and prefill this input when selecting language -->
-                <li>
-                  {{#equals month-number "prefix"}}01 -
-                  {{/equals}}<input type="text" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 01{{/equals}}
+              and formatted as follows:
+              <ul>
+                <li {{#equals month-language "custom"}} class="disabled" {{/equals}}>
+                  <select name="month-case" {{#equals month-language "custom"}} disabled="disabled" {{/equals}}>
+                    <option value="upper" {{#equals month-case "upper"}} selected="selected" {{/equals}}>UPPER CASE</option>
+                    <option value="lower" {{#equals month-case "lower"}} selected="selected" {{/equals}}>lower case</option>
+                    <option value="proper" {{#equals month-case "proper"}} selected="selected" {{/equals}}>Proper Case</option>
+                  </select>
                 </li>
                 <li>
-                  {{#equals month-number "prefix"}}02 -
-                  {{/equals}}<input type="text" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 02{{/equals}}
+                  <select name="month-number" {{#equals month-language "custom"}} disabled="disabled" {{/equals}}>
+                    <option value="prefix" {{#equals month-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
+                    <option value="suffix" {{#equals month-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
+                    <option value="none" {{#equals month-number "none"}} selected="selected" {{/equals}}>without</option>
+                  </select>
+                  the month's number, separated by
+                  <input type="text" name="month-separator" value="{{month-separator}}">
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}03 -
-                  {{/equals}}<input type="text" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 03{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}01{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}01{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}04 -
-                  {{/equals}}<input type="text" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 04{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}02{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}02{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}05 -
-                  {{/equals}}<input type="text" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 05{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}03{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}03{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}06 -
-                  {{/equals}}<input type="text" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 06{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}04{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}04{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}07 -
-                  {{/equals}}<input type="text" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 07{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}05{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}05{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}08 -
-                  {{/equals}}<input type="text" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 08{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}06{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}06{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}09 -
-                  {{/equals}}<input type="text" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 09{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}07{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}07{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}10 -
-                  {{/equals}}<input type="text" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 10{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}08{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}08{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}11 -
-                  {{/equals}}<input type="text" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 11{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}09{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}09{{/equals}}
                 </li>
-                <li>
-                  {{#equals month-number "prefix"}}12 -
-                  {{/equals}}<input type="text" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}
-                    - 12{{/equals}}
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}10{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}10{{/equals}}
+                </li>
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}11{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}11{{/equals}}
+                </li>
+                <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                  {{#equals month-number "prefix"}}12{{month-separator}}{{/equals}}
+                  <input type="text" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}{{month-separator}}12{{/equals}}
                 </li>
               </ul>
             </li>
@@ -203,6 +193,15 @@
               </li>
             </ul>
             <ul>
+              <li>
+                <select name="day-number">
+                  <option value="prefix" {{#equals day-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
+                  <option value="suffix" {{#equals day-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
+                  <option value="none" {{#equals day-number "none"}} selected="selected" {{/equals}}>without</option>
+                </select>
+                the day's number, separated by
+                <input type="text" name="day-separator" value="{{day-separator}}">
+              </li>
               <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
                 {{#equals day-number "prefix"}}08{{day-separator}}{{/equals}}
                 <input type="text" name="day-names.[1]" value="{{day-names.[1]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
@@ -237,15 +236,6 @@
                 {{#equals day-number "prefix"}}14{{day-separator}}{{/equals}}
                 <input type="text" name="day-names.[7]" value="{{day-names.[7]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
                 {{#equals day-number "suffix"}}{{day-separator}}14{{/equals}}
-              </li>
-              <li>
-                <select name="day-number">
-                  <option value="prefix" {{#equals day-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
-                  <option value="suffix" {{#equals day-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
-                  <option value="none" {{#equals day-number "none"}} selected="selected" {{/equals}}>without</option>
-                </select>
-                the day's number, separated by
-                <input type="text" name="day-separator" value="{{day-separator}}">
               </li>
             </ul>
           </li>
