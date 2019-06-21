@@ -77,8 +77,8 @@ input,
 select {
   font: inherit;
   font-family: inherit;
-  color: inherit;
-  background: inherit;
+  color: $text;
+  background: $background;
   border-width: 1px;
   border-style: solid;
   border-color: $borders;
