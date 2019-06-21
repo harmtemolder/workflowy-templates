@@ -1,167 +1,308 @@
 <html>
 
-<head>
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-K35L64P');</script>
-  <link rel="stylesheet" href="/styles/style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="/scripts/form-functions.js"></script>
-  <script src="/scripts/modal-functions.js"></script>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="mask-icon" href="icon.svg" color="rgb(0, 102, 153)">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>WorkFlowy Calendar Generator by @harmtemolder</title>
-</head>
+  <head>
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer'
+            ? '&l=' + l
+            : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-K35L64P');
+    </script>
+    <link rel="stylesheet" href="/styles/style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/scripts/form-functions.js"></script>
+    <script src="/scripts/modal-functions.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="mask-icon" href="icon.svg" color="rgb(0, 102, 153)">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>WorkFlowy Calendar Generator by @harmtemolder</title>
+  </head>
 
-<body>
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K35L64P" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <div class="page">
-    <h1>WorkFlowy Calendar Generator</h1>
-    <p class="notes">Use this generator to easily fill your WorkFlowy calendar for a given period of time.</p>
-    <ul>
-      <form action="/" method="post">
-        <li>
-          I would like to generate a list for
-          <select name="period">
-            <option value="full-year" {{#equals period "full-year"}}selected{{/equals}}>an entire year,</option>
-            <option value="custom" {{#equals period "custom"}}selected{{/equals}}>a time period I want to set myself</option>
-          </select>
-          <br />
-          <ul>
-            <li id="period-full-year" {{#equals period "custom"}}class="disabled"{{/equals}}>namely <input type="number" name="year" value="{{year}}" {{#equals period "custom"}}disabled{{/equals}}/></li>
-            <li id="period-custom" {{#equals period "full-year"}}class="disabled"{{/equals}}>
-              namely from
-                <input type="date" name="from-date" value="{{from-date}}" {{#equals period "full-year"}}disabled{{/equals}}>
-                up to and including
-                <input type="date" name="to-date" value="{{to-date}}" {{#equals period "full-year"}}disabled{{/equals}}>
-
-            </li>
-          </ul>
-        </li>
-        <li>
-          Ordered with
-          <select name="order">
-            <option value="descending" {{#equals order "descending"}}selected{{/equals}}>the last date, e.g. December 31st,</option>
-            <option value="ascending" {{#equals order "ascending"}}selected{{/equals}}>the first date, e.g. January 1st,</option>
-          </select>
-          at the top of the list
-        </li>
-        <li>
-          It should include levels for
-          <ul class="nobullets">
-            <li><div class="checkbox {{#nequals level-for-months "true"}}off{{/nequals}}"><input type="checkbox" id="level-for-months" name="level-for-months" value="true" {{#equals level-for-months "true"}}checked{{/equals}}><label for="level-for-months"></label></div> months</li>
-            <li><div class="checkbox {{#nequals level-for-weeks "true"}}off{{/nequals}}"><input type="checkbox" id="level-for-weeks" name="level-for-weeks" value="true" {{#equals level-for-weeks "true"}}checked{{/equals}}><label for="level-for-weeks"></label></div> weeks</li>
-          </ul>
-        </li>
-        {{#equals level-for-months "true"}}<li>
-          With the month names in
-          <select name="month-language">
-            <option value="english" {{#equals month-language "english"}}selected{{/equals}}>English</option>
-            <option value="dutch" {{#equals month-language "dutch"}}selected{{/equals}}>Dutch</option>
-            <option value="custom" {{#equals month-language "custom"}}selected{{/equals}}>some other way</option>
-          </select>
-        <span {{#equals month-language "custom"}}class="disabled"{{/equals}}>and
-          <select name="month-case" {{#equals month-language "custom"}}disabled{{/equals}}>
-            <option value="upper" {{#equals month-case "upper"}}selected{{/equals}}>UPPER CASE</option>
-            <option value="lower" {{#equals month-case "lower"}}selected{{/equals}}>lower case</option>
-            <option value="proper" {{#equals month-case "proper"}}selected{{/equals}}>Proper Case</option>
-          </select>,
-          <select name="month-number" {{#equals month-language "custom"}}disabled{{/equals}}>
-            <option value="prefix" {{#equals month-number "prefix"}}selected{{/equals}}>prefixed with</option>
-            <option value="suffix" {{#equals month-number "suffix"}}selected{{/equals}}>suffixed with</option>
-            <option value="none" {{#equals month-number "none"}}selected{{/equals}}>without</option>
-          </select>
-           the month's number</span>
-          <br />
-          <ul {{#nequals month-language "custom"}}class="disabled"{{/nequals}}>
-            <!-- TODO Disable and prefill this input when selecting language -->
-            <li>{{#equals month-number "prefix"}}01 - {{/equals}}<input type="text" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 01{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}02 - {{/equals}}<input type="text" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 02{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}03 - {{/equals}}<input type="text" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 03{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}04 - {{/equals}}<input type="text" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 04{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}05 - {{/equals}}<input type="text" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 05{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}06 - {{/equals}}<input type="text" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 06{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}07 - {{/equals}}<input type="text" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 07{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}08 - {{/equals}}<input type="text" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 08{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}09 - {{/equals}}<input type="text" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 09{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}10 - {{/equals}}<input type="text" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 10{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}11 - {{/equals}}<input type="text" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 11{{/equals}}</li>
-            <li>{{#equals month-number "prefix"}}12 - {{/equals}}<input type="text" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}}disabled{{/nequals}}>{{#equals month-number "suffix"}} - 12{{/equals}}</li>
-          </ul><!-- TODO ook nog een nummer aan de maand toevoegen? -->
-        </li>{{/equals}}
-        {{#equals level-for-weeks "true"}}<li>
-          Let weeks start on
-            <select name="week-start">
-              <option value="monday" {{#equals week-start "monday"}}selected{{/equals}}>Monday</option>
-              <option value="sunday" {{#equals week-start "sunday"}}selected{{/equals}} disabled>Sunday @workinprogress</option>
+  <body>
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K35L64P" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <div class="page">
+      <h1>WorkFlowy Calendar Generator</h1>
+      <p class="notes">Use this generator to easily fill your WorkFlowy calendar for a given period of time.</p>
+      <ul>
+        <form action="/" method="post">
+          <li>
+            I would like to generate a list for
+            <select name="period">
+              <option value="full-year" {{#equals period "full-year"}} selected="selected" {{/equals}}>an entire year,</option>
+              <option value="custom" {{#equals period "custom"}} selected="selected" {{/equals}}>a time period I want to set myself</option>
             </select>
-          , with day names in
-          <select name="day-language">
-            <option value="english" {{#equals day-language "english"}}selected{{/equals}}>English</option>
-            <option value="dutch" {{#equals day-language "dutch"}}selected{{/equals}}>Dutch</option>
-            <option value="custom" {{#equals day-language "custom"}}selected{{/equals}}>some other way</option>
-          </select>
-          <span {{#equals day-language "custom"}}class="disabled"{{/equals}}>and
-          <select name="day-case" {{#equals day-language "custom"}}disabled{{/equals}}>
-            <option value="upper" {{#equals day-case "upper"}}selected{{/equals}}>UPPER CASE</option>
-            <option value="lower" {{#equals day-case "lower"}}selected{{/equals}}>lower case</option>
-            <option value="proper" {{#equals day-case "proper"}}selected{{/equals}}>Proper Case</option>
-          </select>
-          ,
-          <select name="day-number" {{#equals day-language "custom"}}disabled{{/equals}}>
-            <option value="prefix" {{#equals day-number "prefix"}}selected{{/equals}}>prefixed with</option>
-            <option value="suffix" {{#equals day-number "suffix"}}selected{{/equals}}>suffixed with</option>
-            <option value="none" {{#equals day-number "none"}}selected{{/equals}}>without</option>
-          </select>
-          the day's number</span>
-          <br />
-          <ul {{#nequals day-language "custom"}}class="disabled"{{/nequals}}>
-            {{#equals week-start "sunday"}}<li>{{#equals day-number "prefix"}}07 - {{/equals}}<input type="text" name="day-name-7" value="{{day-name-7}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 07{{/equals}}</li>{{/equals}}
-            <li>{{#equals day-number "prefix"}}08 - {{/equals}}<input type="text" name="day-name-1" value="{{day-name-1}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 08{{/equals}}</li>
-            <li>{{#equals day-number "prefix"}}09 - {{/equals}}<input type="text" name="day-name-2" value="{{day-name-2}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 09{{/equals}}</li>
-            <li>{{#equals day-number "prefix"}}10 - {{/equals}}<input type="text" name="day-name-3" value="{{day-name-3}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 10{{/equals}}</li>
-            <li>{{#equals day-number "prefix"}}11 - {{/equals}}<input type="text" name="day-name-4" value="{{day-name-4}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 11{{/equals}}</li>
-            <li>{{#equals day-number "prefix"}}12 - {{/equals}}<input type="text" name="day-name-5" value="{{day-name-5}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 12{{/equals}}</li>
-            <li>{{#equals day-number "prefix"}}13 - {{/equals}}<input type="text" name="day-name-6" value="{{day-name-6}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 13{{/equals}}</li>
-            {{#equals week-start "monday"}}<li>{{#equals day-number "prefix"}}14 - {{/equals}}<input type="text" name="day-name-7" value="{{day-name-7}}" {{#nequals day-language "custom"}}disabled{{/nequals}}>{{#equals day-number "suffix"}} - 14{{/equals}}</li>{{/equals}}
-          </ul>
-        </li>{{/equals}}
-        <li><input type="hidden" name="generate" value="true" /><input id="generate" type="submit" class="link" value="Generate" /></li>
-      </form>
-      {{#if html-list}}
-      {{{html-list}}}
-      <script>
-        (function scrollToGenerate() {
-          $('html, body').animate({
-            scrollTop: $("#generate").offset().top
-          }, 1000);
-        }());
-      </script>
-      {{/if}}
-    </ul>
-  </div>
-  <div id="modal-overlay">
-    <div id="modal-darken"></div>
-    <div id="warning-modal">
-      <div class="modal-content">
-        <div class="modal-close">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke-linecap="round" stroke="rgb(92, 96, 98)">
-            <line x1="1" y1="1" x2="19" y2="19"></line>
-            <line x1="19" y1="1" x2="1" y2="19"></line>
-          </svg>
-          <div class="modal-close-hover"></div>
+            <br/>
+            <ul>
+              <li id="period-full-year" {{#equals period "custom"}} class="disabled" {{/equals}}>namely
+                <input type="number" name="year" value="{{year}}" {{#equals period "custom"}} disabled="disabled" {{/equals}}/>
+              </li>
+              <li id="period-custom" {{#equals period "full-year"}} class="disabled" {{/equals}}>
+                namely from
+                <input type="date" name="from-date" value="{{from-date}}" {{#equals period "full-year"}} disabled="disabled" {{/equals}}>
+                up to and including
+                <input type="date" name="to-date" value="{{to-date}}" {{#equals period "full-year"}} disabled="disabled" {{/equals}}>
+              </li>
+            </ul>
+          </li>
+          <li>
+            Ordered with
+            <select name="order">
+              <option value="descending" {{#equals order "descending"}} selected="selected" {{/equals}}>the last date, e.g. December 31st,</option>
+              <option value="ascending" {{#equals order "ascending"}} selected="selected" {{/equals}}>the first date, e.g. January 1st,</option>
+            </select>
+            at the top of the list
+          </li>
+          <li>
+            It should include levels for
+            <ul class="nobullets">
+              <li>
+                <div class="checkbox {{#nequals level-for-months "true"}} off {{/nequals}}"><input type="checkbox" id="level-for-months" name="level-for-months" value="true" {{#equals level-for-months "true"}} checked="checked" {{/equals}}>
+                  <label for="level-for-months"></label>
+                </div>
+                months
+              </li>
+              <li>
+                <div class="checkbox {{#nequals level-for-weeks "true"}} off {{/nequals}}"><input type="checkbox" id="level-for-weeks" name="level-for-weeks" value="true" {{#equals level-for-weeks "true"}} checked="checked" {{/equals}}>
+                  <label for="level-for-weeks"></label>
+                </div>
+                weeks
+              </li>
+            </ul>
+          </li>
+          {{#equals level-for-months "true"}}
+            <li>
+              With the month names in
+              <select name="month-language">
+                <option value="english" {{#equals month-language "english"}} selected="selected" {{/equals}}>English</option>
+                <option value="dutch" {{#equals month-language "dutch"}} selected="selected" {{/equals}}>Dutch</option>
+                <option value="custom" {{#equals month-language "custom"}} selected="selected" {{/equals}}>some other way</option>
+              </select>
+              <span {{#equals month-language "custom"}} class="disabled" {{/equals}}>and
+                <select name="month-case" {{#equals month-language "custom"}} disabled="disabled" {{/equals}}>
+                  <option value="upper" {{#equals month-case "upper"}} selected="selected" {{/equals}}>UPPER CASE</option>
+                  <option value="lower" {{#equals month-case "lower"}} selected="selected" {{/equals}}>lower case</option>
+                  <option value="proper" {{#equals month-case "proper"}} selected="selected" {{/equals}}>Proper Case</option>
+                </select>,
+                <select name="month-number" {{#equals month-language "custom"}} disabled="disabled" {{/equals}}>
+                  <option value="prefix" {{#equals month-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
+                  <option value="suffix" {{#equals month-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
+                  <option value="none" {{#equals month-number "none"}} selected="selected" {{/equals}}>without
+                  </option>
+                </select>
+                the month's number</span>
+              <br/>
+              <ul {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                <!-- TODO Disable and prefill this input when selecting language -->
+                <li>
+                  {{#equals month-number "prefix"}}01 -
+                  {{/equals}}<input type="text" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 01{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}02 -
+                  {{/equals}}<input type="text" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 02{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}03 -
+                  {{/equals}}<input type="text" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 03{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}04 -
+                  {{/equals}}<input type="text" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 04{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}05 -
+                  {{/equals}}<input type="text" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 05{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}06 -
+                  {{/equals}}<input type="text" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 06{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}07 -
+                  {{/equals}}<input type="text" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 07{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}08 -
+                  {{/equals}}<input type="text" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 08{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}09 -
+                  {{/equals}}<input type="text" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 09{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}10 -
+                  {{/equals}}<input type="text" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 10{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}11 -
+                  {{/equals}}<input type="text" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 11{{/equals}}
+                </li>
+                <li>
+                  {{#equals month-number "prefix"}}12 -
+                  {{/equals}}<input type="text" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                  {{#equals month-number "suffix"}}
+                    - 12{{/equals}}
+                </li>
+              </ul>
+            </li>
+          {{/equals}}
+          <li>
+            I would like the days of the week in
+            <select name="day-language">
+              <option value="english" {{#equals day-language "english"}} selected="selected" {{/equals}}>English</option>
+              <option value="dutch" {{#equals day-language "dutch"}} selected="selected" {{/equals}}>Dutch</option>
+              <option value="custom" {{#equals day-language "custom"}} selected="selected" {{/equals}}>some custom format</option>
+            </select>
+            and formatted as follows:
+            <ul>
+              <li {{#equals day-language "custom"}} class="disabled" {{/equals}}>
+                <select name="day-case" {{#equals day-language "custom"}} disabled="disabled" {{/equals}}>
+                  <option value="upper" {{#equals day-case "upper"}} selected="selected" {{/equals}}>UPPER CASE</option>
+                  <option value="lower" {{#equals day-case "lower"}} selected="selected" {{/equals}}>lower case</option>
+                  <option value="proper" {{#equals day-case "proper"}} selected="selected" {{/equals}}>Proper Case</option>
+                </select>
+              </li>
+            </ul>
+            <ul class="nobullets {{#equals day-language "custom"}} disabled {{/equals}}">
+              <li>
+                <div class="checkbox {{#nequals day-abbreviated "true"}} off {{/nequals}}"><input type="checkbox" id="day-abbreviated" name="day-abbreviated" value="true" {{#equals day-abbreviated "true"}} checked="checked" {{/equals}}>
+                  <label for="day-abbreviated"></label>
+                </div>
+                abbreviated to only the first 3 letters
+              </li>
+            </ul>
+            <ul>
+              <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
+                {{#equals day-number "prefix"}}08{{day-separator}}{{/equals}}
+                <input type="text" name="day-names.[1]" value="{{day-names.[1]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
+                {{#equals day-number "suffix"}}{{day-separator}}08{{/equals}}
+              </li>
+              <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
+                {{#equals day-number "prefix"}}09{{day-separator}}{{/equals}}
+                <input type="text" name="day-names.[2]" value="{{day-names.[2]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
+                {{#equals day-number "suffix"}}{{day-separator}}09{{/equals}}
+              </li>
+              <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
+                {{#equals day-number "prefix"}}10{{day-separator}}{{/equals}}
+                <input type="text" name="day-names.[3]" value="{{day-names.[3]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
+                {{#equals day-number "suffix"}}{{day-separator}}10{{/equals}}
+              </li>
+              <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
+                {{#equals day-number "prefix"}}11{{day-separator}}{{/equals}}
+                <input type="text" name="day-names.[4]" value="{{day-names.[4]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
+                {{#equals day-number "suffix"}}{{day-separator}}11{{/equals}}
+              </li>
+              <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
+                {{#equals day-number "prefix"}}12{{day-separator}}{{/equals}}
+                <input type="text" name="day-names.[5]" value="{{day-names.[5]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
+                {{#equals day-number "suffix"}}{{day-separator}}12{{/equals}}
+              </li>
+              <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
+                {{#equals day-number "prefix"}}13{{day-separator}}{{/equals}}
+                <input type="text" name="day-names.[6]" value="{{day-names.[6]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
+                {{#equals day-number "suffix"}}{{day-separator}}13{{/equals}}
+              </li>
+              <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
+                {{#equals day-number "prefix"}}14{{day-separator}}{{/equals}}
+                <input type="text" name="day-names.[7]" value="{{day-names.[7]}}" {{#nequals day-language "custom"}} disabled="disabled" {{/nequals}}>
+                {{#equals day-number "suffix"}}{{day-separator}}14{{/equals}}
+              </li>
+              <li>
+                <select name="day-number">
+                  <option value="prefix" {{#equals day-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
+                  <option value="suffix" {{#equals day-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
+                  <option value="none" {{#equals day-number "none"}} selected="selected" {{/equals}}>without</option>
+                </select>
+                the day's number, separated by
+                <input type="text" name="day-separator" value="{{day-separator}}">
+              </li>
+            </ul>
+          </li>
+          <li>
+            <input type="hidden" name="generate" value="true"/>
+            <input id="generate" type="submit" class="link" value="Generate"/>
+          </li>
+        </form>
+        {{#if html-list}}
+          {{{html-list}}}
+          <script>
+            (function scrollToGenerate() {
+              $('html, body').animate({
+                scrollTop: $("#generate").offset().top
+              }, 1000);
+            }());
+          </script>
+        {{/if}}
+      </ul>
+    </div>
+    <div id="modal-overlay">
+      <div id="modal-darken"></div>
+      <div id="warning-modal">
+        <div class="modal-content">
+          <div class="modal-close">
+            <svg width="20" height="20" viewbox="0 0 20 20" fill="none" stroke-linecap="round" stroke="rgb(92, 96, 98)">
+              <line x1="1" y1="1" x2="19" y2="19"></line>
+              <line x1="19" y1="1" x2="1" y2="19"></line>
+            </svg>
+            <div class="modal-close-hover"></div>
+          </div>
+          <h1>Read this first!</h1>
+          <p>Using this calendar generator to fill your WorkFlowy quickly goes towards the monthly quota of a free account. So make sure you know what you're doing. If in doubt, select the option that applies to you:</p>
+          <p>
+            <a href="#" class="modal-button new-user">"<strong>I don't have a WorkFlowy account yet</strong>, but would appreciate the 100 extra free items I get every month when I sign up using your following referral link."</a>
+          </p>
+          <p class="centered">
+            <a href="https://workflowy.com/invite/6b9f5645.lnx" target="_blank">my referral link</a>
+          </p>
+          <p>
+            <a href="#" class="modal-button free-user">
+              <strong>"I have a free account</strong>, but will keep my monthly quota in check by selecting a smaller period of time. I might even share my own WorkFlowy referral link to get more free items per month."</a>
+          </p>
+          <p class="centered">
+            <a href="https://workflowy.com/referrals/" target="_blank">your referral link</a>
+          </p>
+          <p>
+            <a href="#" class="modal-button pro-user">
+              <strong>"I have a pro account</strong>, or will get one when I reach my monthly quota, so don't worry about me."</a>
+          </p>
+          <p>In any case, I won't bother you again: This popup will only be shown once.</p>
+          <p class="signed">&mdash;
+            <a href="https://twitter.com/harmtemolder" target="_blank">Harm te Molder</a>
+          </p>
         </div>
-        <h1>Read this first!</h1>
-        <p>Using this calendar generator to fill your WorkFlowy quickly goes towards the monthly quota of a free account. So make sure you know what you're doing. If in doubt, select the option that applies to you:</p>
-        <p><a href="#" class="modal-button new-user">"<strong>I don't have a WorkFlowy account yet</strong>, but would appreciate the 100 extra free items I get every month when I sign up using your following referral link."</a></p>
-        <p class="centered"><a href="https://workflowy.com/invite/6b9f5645.lnx" target="_blank">my referral link</a></p>
-        <p><a href="#" class="modal-button free-user"><strong>"I have a free account</strong>, but will keep my monthly quota in check by selecting a smaller period of time. I might even share my own WorkFlowy referral link to get more free items per month."</a></p>
-        <p class="centered"><a href="https://workflowy.com/referrals/" target="_blank">your referral link</a></p>
-        <p><a href="#" class="modal-button pro-user"><strong>"I have a pro account</strong>, or will get one when I reach my monthly quota, so don't worry about me."</a></p>
-        <p>In any case, I won't bother you again: This popup will only be shown once.</p>
-        <p class="signed">&mdash; <a href="https://twitter.com/harmtemolder" target="_blank">Harm te Molder</a></p>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 
 </html>

@@ -7,6 +7,7 @@ function fillGaps(context) {
   // Because checkboxes don't return anything if they're unchecked, re-add them
   filledContext['level-for-months'] = filledContext['level-for-months'] || 'false';
   filledContext['level-for-weeks'] = filledContext['level-for-weeks'] || 'false';
+  filledContext['day-abbreviated'] = filledContext['day-abbreviated'] || 'false';
 
   // Then fill any gaps based on the defaults
   filledContext = Object.assign(defaultContext.context, filledContext);
@@ -61,18 +62,18 @@ function processDayAndMonthNames(context) {
   const monthNames = {};
 
   // Loop through the context and get all month-name-* and day-name-* variables
-  for (const varName of Object.keys(outputContext)) {
+  Object.keys(outputContext).forEach(function writeDayAndMonthNames(varName) {
     const dayNumberMatch = /^day-name-(\d)$/.exec(varName);
     const monthNumberMatch = /^month-name-(\d{1,2})$/.exec(varName);
 
     if (dayNumberMatch !== null) {
       // If the selected variable is a day-name-* variable add it to dayNames
-      dayNames[dayNumberMatch[1]] = outputContext[varName];
+      dayNames[dayNumberMatch[1]] = (outputContext['day-abbreviated'] === 'true' ? outputContext[varName].substring(0, 3) : outputContext[varName]);
     } else if (monthNumberMatch !== null) {
       // If the selected variable is a month-name-* variable add it to monthNames
       monthNames[monthNumberMatch[1]] = outputContext[varName];
     }
-  }
+  });
 
   return Object.assign(
     outputContext, {

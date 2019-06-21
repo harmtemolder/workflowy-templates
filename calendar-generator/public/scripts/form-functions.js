@@ -60,6 +60,12 @@ $(document).ready(function documentReadyFunction() {
     $(this).closest('form').submit();
   });
 
+  // When one of the "-abbreviated" checkboxes changes update the form accordingly
+  $('input[name$="-abbreviated"]').change(function updateOnAbbreviatedChange() {
+    $('input[name=generate]').val('false');
+    $(this).closest('form').submit();
+  });
+
   // When the form is submitted, remove all "disabled" attributes to still get
   // all input fields' values in the context object
   $('form').submit(function enableFields() {

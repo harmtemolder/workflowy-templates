@@ -66,9 +66,9 @@ function generateCalendar(context) {
     return `${firstDay}${separator}${lastDay}`;
   }
 
-  function generateDay(date, dayNames, dayNumber, daySeparator) {
+  function generateDay(date, dayNames, dayNumber, daySeparator, dayAbbreviated) {
     const dayPrefix = (dayNumber === 'prefix' ? `${date.format('DD')}${daySeparator}` : '');
-    const day = dayNames[date.isoWeekday()];
+    const day = (dayAbbreviated ? dayNames[date.isoWeekday()].substring(0, 3) : dayNames[date.isoWeekday()]);
     const daySuffix = (dayNumber === 'suffix' ? `${daySeparator}${date.format('DD')}` : '');
 
     return `<li>${dayPrefix}${day}${daySuffix}</li>`;
@@ -97,7 +97,7 @@ function generateCalendar(context) {
 
   function dateListToHtml(dateList, includeMonths, monthNames, monthNumber,
     monthSeparator, includeWeeks, weekNumber, weekSeparator, dayNames,
-    dayNumber, daySeparator) {
+    dayNumber, daySeparator, dayAbbreviated) {
     let outputHtml = '';
     let previousDate;
 
@@ -105,7 +105,7 @@ function generateCalendar(context) {
       const date = moment(dateList[d]);
 
       // Start with the lowest level of the nest, the day
-      let dayHtml = generateDay(date, dayNames, dayNumber, daySeparator);
+      let dayHtml = generateDay(date, dayNames, dayNumber, daySeparator, dayAbbreviated);
 
       // Set up the very first date with all requested levels
       if (previousDate == null || (previousDate.year() !== date.year())) {
@@ -185,13 +185,14 @@ function generateCalendar(context) {
     (context['level-for-months'] === 'true'), // includeMonths
     context['month-names'], // monthNames
     context['month-number'], // monthNumber
-    ' ', // monthSeparator
+    context['month-separator'], // monthSeparator
     (context['level-for-weeks'] === 'true'), // includeWeeks
     false, // weekNumber
-    '-', // weekSeparator
+    context['week-separator'], // weekSeparator
     context['day-names'], // dayNames
     context['day-number'], // dayNumber
-    ' ', // daySeparator
+    context['day-separator'], // daySeparator
+    (context['day-abbreviated'] === 'true'), // dayAbbreviated
   );
 
   // Add the resulting HTML list to context to be used within the HTML template

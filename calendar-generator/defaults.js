@@ -15,10 +15,13 @@ let context = {
   'month-case': 'upper',
   'month-language': 'english',
   'month-number': 'prefix',
-  'week-start': 'monday',
+  'month-separator': ' ',
+  'week-separator': '-',
   'day-language': 'english',
   'day-case': 'proper',
   'day-number': 'prefix',
+  'day-separator': ' ',
+  'day-abbreviated': 'false',
 };
 
 // Convert default month names to selected case
