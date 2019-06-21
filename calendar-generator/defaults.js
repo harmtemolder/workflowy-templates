@@ -22,6 +22,7 @@ let context = {
   'day-number': 'prefix',
   'day-separator': ' ',
   'day-abbreviated': 'false',
+  'day-abbreviated-length': '3',
 };
 
 // Convert default month names to selected case

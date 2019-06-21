@@ -86,6 +86,10 @@ select {
   border-radius: 5px;
 }
 
+input.shortTextField {
+  width: 2em;
+}
+
 input[type="checkbox"] {
   visibility: hidden;
 }

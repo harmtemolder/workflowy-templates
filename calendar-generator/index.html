@@ -102,8 +102,9 @@
                     <option value="suffix" {{#equals month-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
                     <option value="none" {{#equals month-number "none"}} selected="selected" {{/equals}}>without</option>
                   </select>
-                  the month's number, separated by
-                  <input type="text" name="month-separator" value="{{month-separator}}">
+                  the month's number, separated by "
+                  <input type="text" class="shortTextField" name="month-separator" value="{{month-separator}}">
+                  "
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
                   {{#equals month-number "prefix"}}01{{month-separator}}{{/equals}}
@@ -190,7 +191,9 @@
                 <div class="checkbox {{#nequals day-abbreviated "true"}} off {{/nequals}}"><input type="checkbox" id="day-abbreviated" name="day-abbreviated" value="true" {{#equals day-abbreviated "true"}} checked="checked" {{/equals}}>
                   <label for="day-abbreviated"></label>
                 </div>
-                abbreviated to only the first 3 letters
+                abbreviated to only the first
+                <input type="text" class="shortTextField" name="day-abbreviated-length" value="{{day-abbreviated-length}}" />
+                letters
               </li>
             </ul>
             <ul>
@@ -200,8 +203,9 @@
                   <option value="suffix" {{#equals day-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
                   <option value="none" {{#equals day-number "none"}} selected="selected" {{/equals}}>without</option>
                 </select>
-                the day's number, separated by
-                <input type="text" name="day-separator" value="{{day-separator}}">
+                the day's number, separated by "
+                <input type="text" class="shortTextField" name="day-separator" value="{{day-separator}}" />
+                "
               </li>
               <li {{#nequals day-language "custom"}} class="disabled" {{/nequals}}>
                 {{#equals day-number "prefix"}}08{{day-separator}}{{/equals}}

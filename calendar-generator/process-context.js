@@ -68,7 +68,7 @@ function processDayAndMonthNames(context) {
 
     if (dayNumberMatch !== null) {
       // If the selected variable is a day-name-* variable add it to dayNames
-      dayNames[dayNumberMatch[1]] = (outputContext['day-abbreviated'] === 'true' ? outputContext[varName].substring(0, 3) : outputContext[varName]);
+      dayNames[dayNumberMatch[1]] = (outputContext['day-abbreviated'] === 'true' ? outputContext[varName].substring(0, Number(outputContext['day-abbreviated-length'])) : outputContext[varName]);
     } else if (monthNumberMatch !== null) {
       // If the selected variable is a month-name-* variable add it to monthNames
       monthNames[monthNumberMatch[1]] = outputContext[varName];
