@@ -19,6 +19,7 @@
     "no-plusplus": ["error", {
       "allowForLoopAfterthoughts": true
     }],
-    "prefer-arrow-callback": "off"
+    "prefer-arrow-callback": "off",
+    "max-len": ["error", {"code": 125}]
   }
 }

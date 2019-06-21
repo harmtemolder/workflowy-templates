@@ -29,24 +29,11 @@ function setModalCookie(cname) {
   setCookie(cname, 'true', 365);
 }
 
-function pushDataLayerEvent(eventType, eventCategory, eventAction, eventLabel,
-  eventNonInteraction) {
-  if (window.dataLayer != null) {
-    window.dataLayer.push({
-      event: eventType,
-      eventCategory,
-      eventAction,
-      eventLabel,
-      eventNonInteraction,
-    });
-  }
-}
-
 function pushCloseModalEvent(eventLabel) {
   pushDataLayerEvent(
-    'gtm.click',
-    'click interaction',
-    'warning modal closed',
+    'gtm.trackEvent',
+    'warning modal interactions',
+    'modal closed',
     eventLabel,
   );
 }

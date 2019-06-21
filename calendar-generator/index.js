@@ -64,7 +64,7 @@ app.get('/', function respondToGet(req, res) {
   console.log('workflowy-calendar-generator: Serving HTML as response to GET request...');
   const context = processContext.process(defaults.context);
 
-  res.set('Content-Security-Policy', "img-src: 'self'");
+  res.set('Content-Security-Policy', "img-src 'self' data: www.google-analytics.com");
   res.send(htmlTemplate(context));
 });
 

@@ -66,9 +66,25 @@ $(document).ready(function documentReadyFunction() {
     $(this).closest('form').submit();
   });
 
-  // When the form is submitted, remove all "disabled" attributes to still get
-  // all input fields' values in the context object
-  $('form').submit(function enableFields() {
+  // When the form is submitted, get some things sorted first
+  $('form').submit(function onSubmitActions() {
+    (function trackFormSubmitEvent() {
+      if ($('input[name=generate]').val() === 'false') {
+        pushDataLayerEvent(
+          'gtm.trackEvent',
+          'calendar generator form interactions',
+          'submitted without generating a new list',
+        );
+      } else {
+        pushDataLayerEvent(
+          'gtm.trackEvent',
+          'calendar generator form interactions',
+          'submitted with generating a new list',
+        );
+      }
+    }());
+
+    // Remove all "disabled" attributes to still get all input fields' values in the context object
     $('*:disabled').removeAttr('disabled');
   });
 
