@@ -173,8 +173,8 @@
           <li>
             The weeks I would like to have named according to
             <select name="week-format">
-              <option value="number" {{#equals week-number "true"}} selected="selected" {{/equals}}>their week number*</option>
-              <option value="date" {{#equals week-number "false"}} selected="selected" {{/equals}}>the dates that fall within each week</option>
+              <option value="number" {{#equals week-format "number"}} selected="selected" {{/equals}}>their week number*</option>
+              <option value="date" {{#equals week-format "date"}} selected="selected" {{/equals}}>the dates that fall within each week</option>
             </select>
             <ul>
               <li {{#nequals week-format "number"}} class="disabled" {{/nequals}}>
