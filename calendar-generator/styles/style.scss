@@ -40,14 +40,22 @@ h1 {
   margin: 0 0 10px;
 }
 
-.notes {
+.note {
+  color: $notes;
+  white-space: pre-wrap;
   margin-top: 5px;
   margin-bottom: 10px;
   padding-top: 4px;
-  color: $notes;
-  white-space: pre-wrap;
+}
+
+p.note {
   font-size: 15px;
   line-height: 24px;
+}
+
+li > .note {
+  font-size: 13px;
+  line-height: 17px;
 }
 
 ul {
