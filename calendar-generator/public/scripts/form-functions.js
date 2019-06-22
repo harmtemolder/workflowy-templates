@@ -67,19 +67,29 @@ $(document).ready(function documentReadyFunction() {
   });
 
   // When the form is submitted, get some things sorted first
-  $('form').submit(function onSubmitActions() {
+  $('#calendar-generator-form').submit(function onSubmitActions() {
     (function trackFormSubmitEvent() {
       if ($('input[name=generate]').val() === 'false') {
         pushDataLayerEvent(
           'gtm.trackEvent',
           'calendar generator form interactions',
           'submitted without generating a new list',
+          false,
+          false,
+          {
+            context: $('#calendar-generator-form').serialize(),
+          },
         );
       } else {
         pushDataLayerEvent(
           'gtm.trackEvent',
           'calendar generator form interactions',
           'submitted with generating a new list',
+          false,
+          false,
+          {
+            context: $('#calendar-generator-form').serialize(),
+          },
         );
       }
     }());
@@ -91,6 +101,8 @@ $(document).ready(function documentReadyFunction() {
   // When a selector link is clicked, select the text referenced in the link's
   // data-selector attribute using the selectText function
   $('.select-link').on('click', function clickToSelect(e) {
+    e.preventDefault();
+
     const selector = $(this).data('selector');
     $(selector).selectText();
 
@@ -100,6 +112,15 @@ $(document).ready(function documentReadyFunction() {
       $(this).after(`<span id='copy-hint'> (press ${isMac ? 'cmd ⌘' : 'Ctrl'} + C to copy)</span>`);
     }
 
-    e.preventDefault();
+    pushDataLayerEvent(
+      'gtm.trackEvent',
+      'calendar generator form interactions',
+      'clicked select link',
+      false,
+      false,
+      {
+        context: $('#calendar-generator-form').serialize(),
+      },
+    );
   });
 });

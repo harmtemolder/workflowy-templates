@@ -34,7 +34,7 @@
       <h1>WorkFlowy Calendar Generator</h1>
       <p class="note">Use this generator to easily fill your WorkFlowy calendar for a given period of time.</p>
       <ul>
-        <form action="/" method="post">
+        <form id="calendar-generator-form" action="/" method="post">
           <li>
             I would like to generate a list for
             <select name="period">
@@ -287,7 +287,8 @@
             </ul>
           </li>
           <li>
-            <input type="hidden" name="generate" value="true"/>
+            <input type="hidden" name="generate" value="true" />
+            <input type="hidden" name="client-id" value="" />
             <input id="generate" type="submit" class="link" value="Generate"/>
           </li>
         </form>

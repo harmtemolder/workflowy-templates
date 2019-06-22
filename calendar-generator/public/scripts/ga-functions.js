@@ -1,7 +1,7 @@
 // ga-functions.js
 
 function pushDataLayerEvent(eventType, eventCategory, eventAction, eventLabel,
-  eventNonInteraction) {
+  eventNonInteraction, extraParameters) {
   if (window.dataLayer != null && eventType != null && eventCategory != null && eventAction != null) {
     const eventPayload = {};
 
@@ -10,6 +10,11 @@ function pushDataLayerEvent(eventType, eventCategory, eventAction, eventLabel,
     eventPayload.eventAction = eventAction;
     eventPayload.eventLabel = eventLabel || '';
     eventPayload.eventNonInteraction = eventNonInteraction || 'False';
+
+    const parameters = extraParameters || {};
+    Object.keys(parameters).forEach(function addParametersToPayload(key) {
+      eventPayload[key] = parameters[key];
+    });
 
     window.dataLayer.push(eventPayload);
   } else {
