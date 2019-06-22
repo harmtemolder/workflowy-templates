@@ -7,6 +7,7 @@ function fillGaps(context) {
   // Because checkboxes don't return anything if they're unchecked, re-add them
   filledContext['level-for-months'] = filledContext['level-for-months'] || 'false';
   filledContext['level-for-weeks'] = filledContext['level-for-weeks'] || 'false';
+  filledContext['week-date-abbreviated'] = filledContext['week-date-abbreviated'] || 'false';
   filledContext['day-abbreviated'] = filledContext['day-abbreviated'] || 'false';
 
   // Then fill any gaps based on the defaults

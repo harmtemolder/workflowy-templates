@@ -31,7 +31,8 @@ function generateCalendar(context) {
     return dateList;
   }
 
-  function getWeekString(date, separator) {
+  function getWeekString(date, weekDate, weekDateSeparator, includeMonths, weekMonthNames, weekDateAbbreviated,
+    weekDateAbbreviatedLength) {
     // This function takes a date and returns a string of two numbers (e.g.
     // '01-07') where (1) the first is the date's week's Monday, or '01' if the
     // Monday doesn't fall in the date's month and (2) the second is the date's
@@ -42,47 +43,107 @@ function generateCalendar(context) {
     const monday = date.clone().startOf('isoWeek');
     const sunday = date.clone().endOf('isoWeek');
 
-    let firstDay;
-    let lastDay;
+    let mondayMonth = weekMonthNames[monday.month()];
+    let dateMonth = weekMonthNames[date.month()];
+    let sundayMonth = weekMonthNames[sunday.month()];
 
-    if ((date.month() === monday.month()) && (date.month() === sunday.month())) {
-      // both the week's Monday and Sunday fall in the current month
-      firstDay = monday.format('DD');
-      lastDay = sunday.format('DD');
-    } else if (date.month() !== monday.month()) {
-      // the week's Monday falls in the previous month
-      firstDay = '01';
-      lastDay = sunday.format('DD');
+    if (weekDateAbbreviated) {
+      const length = Number(weekDateAbbreviatedLength);
+
+      mondayMonth = mondayMonth.substring(0, length);
+      dateMonth = dateMonth.substring(0, length);
+      sundayMonth = sundayMonth.substring(0, length);
+    }
+
+    let firstDay = monday.format('DD');
+    let lastDay = sunday.format('DD');
+    let weekString;
+
+    if (monday.month() === sunday.month()) {
+      // both the week's Monday and Sunday fall in the same month so includeMonths doesn't matter
+
+      if (firstDay === lastDay) {
+        weekString = firstDay;
+      } else {
+        weekString = `${firstDay}-${lastDay}`;
+      }
+
+      if (weekDate === 'prefix') {
+        weekString = `${dateMonth}${weekDateSeparator}${weekString}`;
+      } else if (weekDate === 'suffix') {
+        weekString = `${weekString}${weekDateSeparator}${dateMonth}`;
+      }
+    } else if (!includeMonths) {
+      // i.e. if the week should contain days from two months
+
+      if (weekDate === 'prefix') {
+        weekString = mondayMonth;
+        weekString += weekDateSeparator;
+        weekString += firstDay;
+        weekString += '-';
+        weekString += sundayMonth;
+        weekString += weekDateSeparator;
+        weekString += lastDay;
+      } else if (weekDate === 'suffix') {
+        weekString = firstDay;
+        weekString += weekDateSeparator;
+        weekString += mondayMonth;
+        weekString += '-';
+        weekString += lastDay;
+        weekString += weekDateSeparator;
+        weekString += sundayMonth;
+      } else {
+        weekString = `${firstDay}-${lastDay}`;
+      }
     } else {
-      // the week's Sunday falls in the next month
-      firstDay = monday.format('DD');
-      lastDay = date.clone().endOf('month').format('DD');
+      if (date.month() !== monday.month()) {
+        // i.e. the week's Monday falls in the previous month and the week should be divided over two months
+        firstDay = '01';
+      } else {
+        // i.e. the week's Sunday falls in the next month and the week should be divided over two months
+        lastDay = date.clone().endOf('month').format('DD');
+      }
+
+      weekString = `${firstDay}-${lastDay}`;
+
+      if (weekDate === 'prefix') {
+        weekString = `${dateMonth}${weekDateSeparator}${weekString}`;
+      } else if (weekDate === 'suffix') {
+        weekString = `${weekString}${weekDateSeparator}${dateMonth}`;
+      }
     }
 
-    if (firstDay === lastDay) {
-      return firstDay;
-    }
-
-    return `${firstDay}${separator}${lastDay}`;
+    return weekString;
   }
 
-  function generateDay(date, dayNames, dayNumber, daySeparator, dayAbbreviated) {
+  function generateDay(date, dayNames, dayNumber, daySeparator, dayAbbreviated, dayAbbreviatedLength) {
     const dayPrefix = (dayNumber === 'prefix' ? `${date.format('DD')}${daySeparator}` : '');
-    const day = (dayAbbreviated ? dayNames[date.isoWeekday()].substring(0, 3) : dayNames[date.isoWeekday()]);
+    let day = dayNames[date.isoWeekday()];
     const daySuffix = (dayNumber === 'suffix' ? `${daySeparator}${date.format('DD')}` : '');
+
+    if (dayAbbreviated) {
+      day = day.substring(0, Number(dayAbbreviatedLength));
+    }
 
     return `<li>${dayPrefix}${day}${daySuffix}</li>`;
   }
 
-  function generateWeek(date, weekFormat, weekNumber, weekNumberLabel) {
-    if (weekFormat === 'number') {
-      const weekPrefix = (weekNumber === 'prefix' ? weekNumberLabel : '');
-      const week = date.isoWeek();
-      const weekSuffix = (weekNumber === 'suffix' ? weekNumberLabel : '');
+  function generateWeek(date, weekFormat, weekNumber, weekNumberLabel, weekDate, weekDateSeparator, weekDateAbbreviated,
+    weekDateAbbreviatedLength, includeMonths, weekMonthNames) {
+    let weekPrefix;
+    let week;
+    let weekSuffix;
 
-      return `<li>${weekPrefix}${week}${weekSuffix}<ul>`;
+    if (weekFormat === 'number') {
+      weekPrefix = (weekNumber === 'prefix' ? weekNumberLabel : '');
+      weekSuffix = (weekNumber === 'suffix' ? weekNumberLabel : '');
+      week = `${weekPrefix}${date.isoWeek()}${weekSuffix}`;
+    } else {
+      week = getWeekString(date, weekDate, weekDateSeparator, includeMonths,
+        weekMonthNames, weekDateAbbreviated, weekDateAbbreviatedLength);
     }
-    return `<li>${getWeekString(date, '-')}<ul>`;
+
+    return `<li>${week}<ul>`;
   }
 
   function generateMonth(date, monthNames, monthNumber, monthSeparator) {
@@ -101,9 +162,9 @@ function generateCalendar(context) {
     return '</li></ul>'.repeat(numLevels);
   }
 
-  function dateListToHtml(dateList, includeMonths, monthNames, monthNumber,
-    monthSeparator, includeWeeks, weekFormat, weekNumber, weekNumberLabel, dayNames,
-    dayNumber, daySeparator, dayAbbreviated) {
+  function dateListToHtml(dateList, includeMonths, monthNames, monthNumber, monthSeparator, includeWeeks, weekFormat,
+    weekNumber, weekNumberLabel, weekDate, weekDateSeparator, weekDateAbbreviated, weekDateAbbreviatedLength, dayNames,
+    dayNumber, daySeparator, dayAbbreviated, dayAbbreviatedLength) {
     let outputHtml = '';
     let previousDate;
 
@@ -111,13 +172,15 @@ function generateCalendar(context) {
       const date = moment(dateList[d]);
 
       // Start with the lowest level of the nest, the day
-      let dayHtml = generateDay(date, dayNames, dayNumber, daySeparator, dayAbbreviated);
+      let dayHtml = generateDay(date, dayNames, dayNumber, daySeparator, dayAbbreviated, dayAbbreviatedLength);
 
       // Set up the very first date with all requested levels
       if (previousDate == null || (previousDate.year() !== date.year())) {
         // Add opening of week
         if (includeWeeks) {
-          dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel)}${dayHtml}`;
+          // Note that this re-uses the monthNames which is also used in the generateMonth function
+          dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel, weekDate, weekDateSeparator,
+            weekDateAbbreviated, weekDateAbbreviatedLength, includeMonths, monthNames)}${dayHtml}`;
         }
 
         // Add opening of month
@@ -142,7 +205,8 @@ function generateCalendar(context) {
         // TODO What if includeMonths === false and weekNumber === false?
         if (includeWeeks) {
           // Add opening of new week
-          dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel)}${dayHtml}`;
+          dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel, weekDate, weekDateSeparator,
+            weekDateAbbreviated, weekDateAbbreviatedLength, includeMonths, monthNames)}${dayHtml}`;
 
           // Add opening of new month
           dayHtml = `${generateMonth(date, monthNames, monthNumber, monthSeparator)}${dayHtml}`;
@@ -158,7 +222,8 @@ function generateCalendar(context) {
         }
       } else if (includeWeeks && ((previousDate.isoWeekday() + date.isoWeekday()) === 8)) {
         // Add opening of new week
-        dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel)}${dayHtml}`;
+        dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel, weekDate, weekDateSeparator,
+          weekDateAbbreviated, weekDateAbbreviatedLength, includeMonths, monthNames)}${dayHtml}`;
 
         // Add closing of previous week
         dayHtml = `${closeList(1)}${dayHtml}`;
@@ -196,22 +261,23 @@ function generateCalendar(context) {
     context['week-format'], // weekFormat
     context['week-number'], // weekNumber
     context['week-number-label'], // weekNumberLabel
+    context['week-date'], // weekDate
+    context['week-date-separator'], // weekDateSeparator
+    context['week-date-abbreviated'] === 'true', // weekDateAbbreviated
+    context['week-date-abbreviated-length'], // weekDateAbbreviatedLength
     context['day-names'], // dayNames
     context['day-number'], // dayNumber
     context['day-separator'], // daySeparator
     context['day-abbreviated'] === 'true', // dayAbbreviated
+    context['day-abbreviated-length'], // dayAbbreviatedLength
   );
 
   // Add the resulting HTML list to context to be used within the HTML template
   return Object.assign(context, {
     'html-list': `<li>--------------------</li>
-    <li>
-    <a href="#" class="select-link" data-selector="#output">Select output</a>
-    </li>
+    <li><a href="#" class="select-link" data-selector="#output">Select output</a></li>
     <li>--------------------</li>
-    <span id="output">
-    ${htmlList}
-    </span>`,
+    <span id="output">${htmlList}</span>`,
   });
 }
 

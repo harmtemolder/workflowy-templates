@@ -177,6 +177,7 @@
               <option value="date" {{#equals week-format "date"}} selected="selected" {{/equals}}>the dates that fall within each week</option>
             </select>
             <ul>
+              {{#equals week-format "number"}}
               <li {{#nequals week-format "number"}} class="disabled" {{/nequals}}>
                 * Since week numbering varies between countries, I've decided to use <a href="https://en.wikipedia.org/wiki/ISO_week_date" target="_blank">the ISO week date system</a>, which is part of <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601</a>. Basically, that means that:
                 <ul>
@@ -186,6 +187,7 @@
                   <li>The last week of the year, either 52 or 53, is the week in which the Gregorian year's last Thursday falls</li>
                 </ul>
               </li>
+              {{/equals}}
               <li {{#nequals week-format "number"}} class="disabled" {{/nequals}}>
                 <select name="week-number" {{#nequals week-format "number"}} disabled="disabled" {{/nequals}}>
                   <option value="prefix" {{#equals day-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
@@ -195,6 +197,26 @@
                 "
                 <input type="text" class="mediumTextField" {{#nequals week-format "number"}} disabled="disabled" {{/nequals}} name="week-number-label" value="{{week-number-label}}" />
                 "
+              </li>
+              <li {{#nequals week-format "date"}} class="disabled" {{/nequals}}>
+                <select name="week-date" {{#nequals week-format "date"}} disabled="disabled" {{/nequals}}>
+                  <option value="prefix" {{#equals week-date "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
+                  <option value="suffix" {{#equals week-date "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
+                  <option value="none" {{#equals week-date "none"}} selected="selected" {{/equals}}>without</option>
+                </select>
+                the month name, separated by "
+                <input type="text" class="shortTextField" {{#nequals week-format "date"}} disabled="disabled" {{/nequals}} name="week-date-separator" value="{{week-date-separator}}">
+                "
+              </li>
+            </ul>
+            <ul class="nobullets {{#nequals week-format "date"}} disabled {{/nequals}}">
+              <li>
+                <div class="checkbox {{#nequals week-date-abbreviated "true"}} off {{/nequals}}"><input type="checkbox" id="week-date-abbreviated" name="week-date-abbreviated" value="true" {{#equals week-date-abbreviated "true"}} checked="checked" {{/equals}}>
+                  <label for="week-date-abbreviated"></label>
+                </div>
+                abbreviated to only the first
+                <input type="text" class="shortTextField" name="week-date-abbreviated-length" value="{{week-date-abbreviated-length}}" />
+                letters
               </li>
             </ul>
           </li>

@@ -64,7 +64,7 @@ app.get('/', function respondToGet(req, res) {
   console.log('workflowy-calendar-generator: Serving HTML as response to GET request...');
   const context = processContext.process(defaults.context);
 
-  res.set('Content-Security-Policy', "img-src 'self' data: www.google-analytics.com");
+  res.set('Content-Security-Policy', "img-src 'self' data: www.google-analytics.com, font-src 'self' data:");
   res.send(htmlTemplate(context));
 });
 
@@ -80,7 +80,7 @@ app.post('/', function respondToPost(req, res) {
     context = calendarGenerator.generateCalendar(context);
   }
 
-  res.set('Content-Security-Policy', "img-src 'self' data: www.google-analytics.com");
+  res.set('Content-Security-Policy', "img-src 'self' data: www.google-analytics.com, font-src 'self' data:");
   res.send(htmlTemplate(context));
 });
 
