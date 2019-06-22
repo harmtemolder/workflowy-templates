@@ -2,7 +2,7 @@ const defaultContext = require('./defaults.js');
 const defaultNames = require('./default-names.json');
 
 function fillGaps(context) {
-  let filledContext = context;
+  const filledContext = context;
 
   // Because checkboxes don't return anything if they're unchecked, re-add them
   filledContext['level-for-months'] = filledContext['level-for-months'] || 'false';
@@ -11,9 +11,7 @@ function fillGaps(context) {
   filledContext['day-abbreviated'] = filledContext['day-abbreviated'] || 'false';
 
   // Then fill any gaps based on the defaults
-  filledContext = Object.assign(defaultContext.context, filledContext);
-
-  return filledContext;
+  return Object.assign(defaultContext.context, filledContext);
 }
 
 function convertCase(inputString, inputCase) {
@@ -42,7 +40,7 @@ function processDayAndMonthNames(context) {
   // case. It then loops through all of them and adds them to a separate object
   // within context that's used by year-generator.js
 
-  let outputContext = context;
+  const outputContext = context;
 
   // Get the default day names for the selected language and write these to context
   if (context['day-language'] !== 'custom') {
@@ -50,7 +48,7 @@ function processDayAndMonthNames(context) {
     Object.keys(defaultDayNames).forEach(function convertDayNameCase(key) {
       defaultDayNames[key] = convertCase(defaultDayNames[key], context['day-case']);
     });
-    outputContext = Object.assign(outputContext, defaultDayNames);
+    Object.assign(outputContext, defaultDayNames);
   }
 
   // Get the default month names as well
@@ -59,7 +57,7 @@ function processDayAndMonthNames(context) {
     Object.keys(defaultMonthNames).forEach(function convertMonthNameCase(key) {
       defaultMonthNames[key] = convertCase(defaultMonthNames[key], context['month-case']);
     });
-    outputContext = Object.assign(outputContext, defaultMonthNames);
+    Object.assign(outputContext, defaultMonthNames);
   }
 
   const dayNames = {};
