@@ -74,9 +74,15 @@ function generateCalendar(context) {
     return `<li>${dayPrefix}${day}${daySuffix}</li>`;
   }
 
-  function generateWeek(date, weekNumber, weekSeparator) {
-    if (weekNumber) return `<li>${date.week()}<ul>`;
-    return `<li>${getWeekString(date, weekSeparator)}<ul>`;
+  function generateWeek(date, weekFormat, weekNumber, weekNumberLabel) {
+    if (weekFormat === 'number') {
+      const weekPrefix = (weekNumber === 'prefix' ? weekNumberLabel : '');
+      const week = date.isoWeek();
+      const weekSuffix = (weekNumber === 'suffix' ? weekNumberLabel : '');
+
+      return `<li>${weekPrefix}${week}${weekSuffix}<ul>`;
+    }
+    return `<li>${getWeekString(date, '-')}<ul>`;
   }
 
   function generateMonth(date, monthNames, monthNumber, monthSeparator) {
@@ -96,7 +102,7 @@ function generateCalendar(context) {
   }
 
   function dateListToHtml(dateList, includeMonths, monthNames, monthNumber,
-    monthSeparator, includeWeeks, weekNumber, weekSeparator, dayNames,
+    monthSeparator, includeWeeks, weekFormat, weekNumber, weekNumberLabel, dayNames,
     dayNumber, daySeparator, dayAbbreviated) {
     let outputHtml = '';
     let previousDate;
@@ -111,7 +117,7 @@ function generateCalendar(context) {
       if (previousDate == null || (previousDate.year() !== date.year())) {
         // Add opening of week
         if (includeWeeks) {
-          dayHtml = `${generateWeek(date, weekNumber, weekSeparator)}${dayHtml}`;
+          dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel)}${dayHtml}`;
         }
 
         // Add opening of month
@@ -136,7 +142,7 @@ function generateCalendar(context) {
         // TODO What if includeMonths === false and weekNumber === false?
         if (includeWeeks) {
           // Add opening of new week
-          dayHtml = `${generateWeek(date, weekNumber, weekSeparator)}${dayHtml}`;
+          dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel)}${dayHtml}`;
 
           // Add opening of new month
           dayHtml = `${generateMonth(date, monthNames, monthNumber, monthSeparator)}${dayHtml}`;
@@ -152,7 +158,7 @@ function generateCalendar(context) {
         }
       } else if (includeWeeks && ((previousDate.isoWeekday() + date.isoWeekday()) === 8)) {
         // Add opening of new week
-        dayHtml = `${generateWeek(date, weekNumber, weekSeparator)}${dayHtml}`;
+        dayHtml = `${generateWeek(date, weekFormat, weekNumber, weekNumberLabel)}${dayHtml}`;
 
         // Add closing of previous week
         dayHtml = `${closeList(1)}${dayHtml}`;
@@ -182,22 +188,30 @@ function generateCalendar(context) {
 
   const htmlList = dateListToHtml(
     dateList,
-    (context['level-for-months'] === 'true'), // includeMonths
+    context['level-for-months'] === 'true', // includeMonths
     context['month-names'], // monthNames
     context['month-number'], // monthNumber
     context['month-separator'], // monthSeparator
-    (context['level-for-weeks'] === 'true'), // includeWeeks
-    false, // weekNumber
-    context['week-separator'], // weekSeparator
+    context['level-for-weeks'] === 'true', // includeWeeks
+    context['week-format'], // weekFormat
+    context['week-number'], // weekNumber
+    context['week-number-label'], // weekNumberLabel
     context['day-names'], // dayNames
     context['day-number'], // dayNumber
     context['day-separator'], // daySeparator
-    (context['day-abbreviated'] === 'true'), // dayAbbreviated
+    context['day-abbreviated'] === 'true', // dayAbbreviated
   );
 
   // Add the resulting HTML list to context to be used within the HTML template
   return Object.assign(context, {
-    'html-list': `<li>--------------------</li><li><a href="#" class="select-link" data-selector="#output">Select output</a></li><li>--------------------</li><span id="output">${htmlList}</span>`,
+    'html-list': `<li>--------------------</li>
+    <li>
+    <a href="#" class="select-link" data-selector="#output">Select output</a>
+    </li>
+    <li>--------------------</li>
+    <span id="output">
+    ${htmlList}
+    </span>`,
   });
 }
 

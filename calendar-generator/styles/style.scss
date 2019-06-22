@@ -90,6 +90,14 @@ input.shortTextField {
   width: 2em;
 }
 
+input.mediumTextField {
+  width: 4em;
+}
+
+input.longTextField {
+  width: 8em;
+}
+
 input[type="checkbox"] {
   visibility: hidden;
 }

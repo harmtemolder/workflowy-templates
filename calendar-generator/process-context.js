@@ -16,9 +16,12 @@ function fillGaps(context) {
 }
 
 function convertCase(inputString, inputCase) {
-  // This function takes the context object and converts the month and day names
-  // to the requested case (see month-case and day-case), unless language is set
-  // to custom
+  // This function takes an inputString and converts its case to whatever is
+  // requested in inputCase. Examples:
+  // 'upper'  => UPPER
+  // 'lower'  => lower
+  // 'proper' => Proper
+  // If inputCase isn't one of these, options, the inputString is returned
 
   switch (inputCase) {
     case 'upper':
@@ -67,8 +70,12 @@ function processDayAndMonthNames(context) {
     const monthNumberMatch = /^month-name-(\d{1,2})$/.exec(varName);
 
     if (dayNumberMatch !== null) {
-      // If the selected variable is a day-name-* variable add it to dayNames
-      dayNames[dayNumberMatch[1]] = (outputContext['day-abbreviated'] === 'true' ? outputContext[varName].substring(0, Number(outputContext['day-abbreviated-length'])) : outputContext[varName]);
+      // If the selected variable is a day-name-* variable add it to dayNames, abbreviated if requested
+      if (outputContext['day-abbreviated'] === 'true') {
+        dayNames[dayNumberMatch[1]] = outputContext[varName].substring(0, Number(outputContext['day-abbreviated-length']));
+      } else {
+        dayNames[dayNumberMatch[1]] = outputContext[varName];
+      }
     } else if (monthNumberMatch !== null) {
       // If the selected variable is a month-name-* variable add it to monthNames
       monthNames[monthNumberMatch[1]] = outputContext[varName];
@@ -109,7 +116,7 @@ function process(context) {
   // Set the to and from dates to the selected year, if period = year
   outputContext = setDatesIfNeeded(outputContext);
 
-  // And finally add (properly cased) day and month names as objects
+  // And finally add (cased and abbreviated as requested) day and month names as objects
   outputContext = processDayAndMonthNames(outputContext);
 
   return outputContext;
