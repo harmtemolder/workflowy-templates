@@ -57,8 +57,8 @@
           <li>
             Ordered with
             <select name="order">
-              <option value="descending" {{#equals order "descending"}} selected="selected" {{/equals}}>the last date, e.g. December 31st,</option>
-              <option value="ascending" {{#equals order "ascending"}} selected="selected" {{/equals}}>the first date, e.g. January 1st,</option>
+              <option value="descending" {{#equals order "descending"}} selected="selected" {{/equals}}>the last date, {{to-date-string}},</option>
+              <option value="ascending" {{#equals order "ascending"}} selected="selected" {{/equals}}>the first date, {{from-date-string}},</option>
             </select>
             at the top of the list
           </li>

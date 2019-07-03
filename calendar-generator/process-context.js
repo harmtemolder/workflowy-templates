@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const defaultContext = require('./defaults.js');
 const defaultNames = require('./default-names.json');
 
@@ -105,6 +107,17 @@ function setDatesIfNeeded(context) {
   return context;
 }
 
+function addDateStrings(context) {
+  // This function takes the from-date and to-date from the context and adds strings
+  // based on these dates
+  return Object.assign(
+    context, {
+      'from-date-string': moment.utc(context['from-date']).format('MMMM Do'),
+      'to-date-string': moment.utc(context['to-date']).format('MMMM Do'),
+    }
+  );
+}
+
 function process(context) {
   let outputContext = context;
 
@@ -112,8 +125,11 @@ function process(context) {
   // the default context
   outputContext = fillGaps(outputContext);
 
-  // Set the to and from dates to the selected year, if period = year
+  // Set the to and from dates to the selected year, if period = full-year
   outputContext = setDatesIfNeeded(outputContext);
+
+  // Add strings for the start and end date to be used in the order dropdown
+  outputContext = addDateStrings(outputContext);
 
   // And finally add (cased and abbreviated as requested) day and month names as objects
   outputContext = processDayAndMonthNames(outputContext);
