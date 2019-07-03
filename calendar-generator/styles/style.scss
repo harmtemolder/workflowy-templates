@@ -4,7 +4,7 @@ $text: rgb(255, 255, 255);
 $notes: rgb(158, 161, 162);
 $disabled: rgb(124, 127, 129);
 $close: rgb(92, 96, 98);
-$borders: rgb(66, 72, 75);
+$modal-background: rgb(66, 72, 75);
 $close-background: rgb(53, 60, 63);
 $toggle-enabled: rgb(51, 102, 119);
 $background: rgb(42, 49, 53);
@@ -89,7 +89,7 @@ select {
   background: $background;
   border-width: 1px;
   border-style: solid;
-  border-color: $borders;
+  border-color: $notes;
   border-image: initial;
   border-radius: 5px;
 }
@@ -294,7 +294,7 @@ input[type=submit].link:hover {
   border-image: initial;
   outline: none;
   border-radius: 12px;
-  background: $borders;
+  background: $modal-background;
   text-decoration: none;
 }
 
