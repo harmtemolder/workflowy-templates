@@ -146,10 +146,11 @@ function generateCalendar(context) {
     return `<li>${week}<ul>`;
   }
 
-  function generateMonth(date, monthNames, monthNumber, monthSeparator) {
-    const monthPrefix = (monthNumber === 'prefix' ? `${date.format('MM')}${monthSeparator}` : '');
+  function generateMonth(date, monthNames, monthNumber, monthNumberOrYear, monthSeparator) {
     const month = monthNames[date.month()];
-    const monthSuffix = (monthNumber === 'suffix' ? `${monthSeparator}${date.format('MM')}` : '');
+    const stringToAdd = (monthNumberOrYear === 'month' ? date.format('MM') : date.format('YYYY'));
+    const monthPrefix = (monthNumber === 'prefix' ? `${stringToAdd}${monthSeparator}` : '');
+    const monthSuffix = (monthNumber === 'suffix' ? `${monthSeparator}${stringToAdd}` : '');
 
     return `<li>${monthPrefix}${month}${monthSuffix}<ul>`;
   }
@@ -162,9 +163,9 @@ function generateCalendar(context) {
     return '</li></ul>'.repeat(numLevels);
   }
 
-  function dateListToHtml(dateList, includeMonths, monthNames, monthNumber, monthSeparator, includeWeeks, weekFormat,
-    weekNumber, weekNumberLabel, weekDate, weekDateSeparator, weekDateAbbreviated, weekDateAbbreviatedLength, dayNames,
-    dayNumber, daySeparator, dayAbbreviated, dayAbbreviatedLength) {
+  function dateListToHtml(dateList, includeMonths, monthNames, monthNumber, monthNumberOrYear, monthSeparator, includeWeeks,
+    weekFormat, weekNumber, weekNumberLabel, weekDate, weekDateSeparator, weekDateAbbreviated, weekDateAbbreviatedLength,
+    dayNames, dayNumber, daySeparator, dayAbbreviated, dayAbbreviatedLength) {
     let outputHtml = '';
     let previousDate;
 
@@ -185,7 +186,7 @@ function generateCalendar(context) {
 
         // Add opening of month
         if (includeMonths) {
-          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthSeparator)}${dayHtml}`;
+          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthNumberOrYear, monthSeparator)}${dayHtml}`;
         }
 
         // Add opening of year
@@ -209,13 +210,13 @@ function generateCalendar(context) {
             weekDateAbbreviated, weekDateAbbreviatedLength, includeMonths, monthNames)}${dayHtml}`;
 
           // Add opening of new month
-          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthSeparator)}${dayHtml}`;
+          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthNumberOrYear, monthSeparator)}${dayHtml}`;
 
           // Add closing of previous month and week
           dayHtml = `${closeList(2)}${dayHtml}`;
         } else {
           // Add opening of new month
-          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthSeparator)}${dayHtml}`;
+          dayHtml = `${generateMonth(date, monthNames, monthNumber, monthNumberOrYear, monthSeparator)}${dayHtml}`;
 
           // Add closing of previous month
           dayHtml = `${closeList(1)}${dayHtml}`;
@@ -256,6 +257,7 @@ function generateCalendar(context) {
     context['level-for-months'] === 'true', // includeMonths
     context['month-names'], // monthNames
     context['month-number'], // monthNumber
+    context['month-number-or-year'], // monthNumberOrYear
     context['month-separator'], // monthSeparator
     context['level-for-weeks'] === 'true', // includeWeeks
     context['week-format'], // weekFormat

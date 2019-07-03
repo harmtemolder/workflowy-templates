@@ -93,7 +93,9 @@ function processDayAndMonthNames(context) {
 
 function setDatesIfNeeded(context) {
   // This function checks to see if period equals year and if so, sets the from-date
-  // and to-date to January 1st and December 31st of the selected year respectively
+  // and to-date to January 1st and December 31st of the selected year respectively. If
+  // dates are selected instead of a full year, the context.year is updated to the year
+  // of the context['to-date']
 
   if (context.period === 'full-year') {
     return Object.assign(
@@ -104,7 +106,11 @@ function setDatesIfNeeded(context) {
     );
   }
 
-  return context;
+  return Object.assign(
+    context, {
+      year: moment.utc(context['to-date']).format('YYYY'),
+    },
+  );
 }
 
 function addDateStrings(context) {
@@ -114,7 +120,7 @@ function addDateStrings(context) {
     context, {
       'from-date-string': moment.utc(context['from-date']).format('MMMM Do'),
       'to-date-string': moment.utc(context['to-date']).format('MMMM Do'),
-    }
+    },
   );
 }
 

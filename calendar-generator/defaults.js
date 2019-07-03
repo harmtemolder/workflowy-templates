@@ -17,6 +17,7 @@ const defaultContext = {
   'month-language': 'english',
   'month-case': 'upper',
   'month-number': 'prefix',
+  'month-number-or-year': 'month',
   'month-separator': ' ',
   'week-format': 'date',
   'week-number': 'prefix',

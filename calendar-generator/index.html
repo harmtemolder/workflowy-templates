@@ -102,69 +102,74 @@
                     <option value="suffix" {{#equals month-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
                     <option value="none" {{#equals month-number "none"}} selected="selected" {{/equals}}>without</option>
                   </select>
-                  the month's number, separated by "
+                  the
+                  <select name="month-number-or-year" {{#equals month-language "custom"}} disabled="disabled" {{/equals}}>
+                    <option value="month" {{#equals month-number-or-year "month"}} selected="selected" {{/equals}}>month's number</option>
+                    <option value="year" {{#equals month-number-or-year "year"}} selected="selected" {{/equals}}>year</option>
+                  </select>
+                  , separated by "
                   <input type="text" class="shortTextField" name="month-separator" value="{{month-separator}}">
                   "
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}01{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}01{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}01{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}01{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}02{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}02{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}02{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}02{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}03{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}03{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}03{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}03{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}04{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}04{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}04{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}04{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}05{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}05{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}05{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}05{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}06{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}06{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}06{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}06{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}07{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}07{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}07{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}07{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}08{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}08{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}08{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}08{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}09{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}09{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}09{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}09{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}10{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}10{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}10{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}10{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}11{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}11{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}11{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}11{{/equals}}{{/equals}}
                 </li>
                 <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
-                  {{#equals month-number "prefix"}}12{{month-separator}}{{/equals}}
+                  {{#equals month-number "prefix"}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}12{{/equals}}{{month-separator}}{{/equals}}
                   <input type="text" class="longTextField" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
-                  {{#equals month-number "suffix"}}{{month-separator}}12{{/equals}}
+                  {{#equals month-number "suffix"}}{{month-separator}}{{#equals month-number-or-year "year"}}{{year}}{{/equals}}{{#equals month-number-or-year "month"}}12{{/equals}}{{/equals}}
                 </li>
               </ul>
             </li>
