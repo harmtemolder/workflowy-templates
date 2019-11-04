@@ -34,7 +34,7 @@ function generateCalendar(context) {
   function getWeekString(date, weekDate, weekDateSeparator, includeMonths, weekMonthNames, weekDateAbbreviated,
     weekDateAbbreviatedLength) {
     // This function takes a date and returns a string of two numbers (e.g.
-    // '01-07') where (1) the first is the date's week's Monday, or '01' if the
+    // '01–07') where (1) the first is the date's week's Monday, or '01' if the
     // Monday doesn't fall in the date's month and (2) the second is the date's
     // week's Sunday, or the last day of the month if the Sunday doesn't fall in
     // the date's month. The two numers are separated by the given separator
@@ -65,7 +65,7 @@ function generateCalendar(context) {
       if (firstDay === lastDay) {
         weekString = firstDay;
       } else {
-        weekString = `${firstDay}-${lastDay}`;
+        weekString = `${firstDay}–${lastDay}`;
       }
 
       if (weekDate === 'prefix') {
@@ -80,7 +80,7 @@ function generateCalendar(context) {
         weekString = mondayMonth;
         weekString += weekDateSeparator;
         weekString += firstDay;
-        weekString += '-';
+        weekString += '–';
         weekString += sundayMonth;
         weekString += weekDateSeparator;
         weekString += lastDay;
@@ -88,12 +88,12 @@ function generateCalendar(context) {
         weekString = firstDay;
         weekString += weekDateSeparator;
         weekString += mondayMonth;
-        weekString += '-';
+        weekString += '–';
         weekString += lastDay;
         weekString += weekDateSeparator;
         weekString += sundayMonth;
       } else {
-        weekString = `${firstDay}-${lastDay}`;
+        weekString = `${firstDay}–${lastDay}`;
       }
     } else {
       if (date.month() !== monday.month()) {
@@ -104,7 +104,7 @@ function generateCalendar(context) {
         lastDay = date.clone().endOf('month').format('DD');
       }
 
-      weekString = `${firstDay}-${lastDay}`;
+      weekString = `${firstDay}–${lastDay}`;
 
       if (weekDate === 'prefix') {
         weekString = `${dateMonth}${weekDateSeparator}${weekString}`;
