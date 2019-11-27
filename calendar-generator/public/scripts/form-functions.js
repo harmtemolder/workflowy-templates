@@ -123,4 +123,7 @@ $(document).ready(function documentReadyFunction() {
       },
     );
   });
+
+  // Initialize tooltips
+  $('[data-toggle="tooltip"]').tooltip();
 });
