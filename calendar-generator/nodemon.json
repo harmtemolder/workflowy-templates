@@ -1,0 +1,4 @@
+{
+  "ext": "js,json,html,scss",
+  "ignore": "package*.json"
+}
