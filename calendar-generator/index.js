@@ -8,6 +8,7 @@ const fs = require('fs');
 const Handlebars = require('handlebars');
 const path = require('path');
 const sassMiddleware = require('node-sass-middleware');
+const csp = require('helmet-csp');
 
 // And local imports
 const calendarGenerator = require('./calendar-generator.js');
@@ -16,6 +17,33 @@ const processContext = require('./process-context.js');
 
 const app = express();
 const port = 8080;
+
+// Set Content-Security-Policy
+app.use(csp({
+  directives: {
+    defaultSrc: [
+      '\'self\'',
+    ],
+    imgSrc: [
+      '\'self\'',
+      'data:',
+      'www.google-analytics.com',
+    ],
+    scriptSrc: [
+      '\'self\'',
+      '\'unsafe-inline\'',
+      '\'unsafe-eval\'',
+      'www.googletagmanager.com',
+      'www.google-analytics.com',
+      'cdnjs.cloudflare.com',
+      'stackpath.bootstrapcdn.com',
+    ],
+    styleSrc: [
+      '\'self\'',
+      'stackpath.bootstrapcdn.com',
+    ],
+  },
+}));
 
 // Parse SCSS from the assets folder
 app.use(sassMiddleware({
@@ -64,7 +92,6 @@ app.get('/', function respondToGet(req, res) {
   console.log('workflowy-calendar-generator: Serving HTML as response to GET request...');
   const context = processContext.process(defaults.context);
 
-  res.set('Content-Security-Policy', "img-src 'self' data: www.google-analytics.com, font-src 'self' data:");
   res.send(htmlTemplate(context));
 });
 
@@ -80,7 +107,6 @@ app.post('/', function respondToPost(req, res) {
     context = calendarGenerator.generateCalendar(context);
   }
 
-  res.set('Content-Security-Policy', "img-src 'self' data: www.google-analytics.com, font-src 'self' data:");
   res.send(htmlTemplate(context));
 });
 
