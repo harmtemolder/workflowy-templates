@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "debug": "node --inspect index.js"
+    "dev": "nodemon --exec npm start",
+    "debug": "nodemon --exec node --inspect index.js"
   },
   "keywords": [
     "workflowy"
@@ -26,6 +27,7 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.13.0"
+    "eslint-plugin-react": "^7.13.0",
+    "nodemon": "^2.0.1"
   }
 }
