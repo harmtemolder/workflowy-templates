@@ -186,9 +186,9 @@
             <ul>
               <li {{#nequals week-format "number"}} class="disabled" {{/nequals}}>
                 <select name="week-number" {{#nequals week-format "number"}} disabled="disabled" {{/nequals}}>
-                  <option value="prefix" {{#equals day-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
-                  <option value="suffix" {{#equals day-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
-                  <option value="none" {{#equals day-number "none"}} selected="selected" {{/equals}}>without</option>
+                  <option value="prefix" {{#equals week-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
+                  <option value="suffix" {{#equals week-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
+                  <option value="none" {{#equals week-number "none"}} selected="selected" {{/equals}}>without</option>
                 </select>
                 "
                 <input type="text" class="mediumTextField" {{#nequals week-format "number"}} disabled="disabled" {{/nequals}} name="week-number-label" value="{{week-number-label}}" />
