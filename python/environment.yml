@@ -4,9 +4,14 @@ channels:
 dependencies:
   - ca-certificates=2020.6.24=0
   - certifi=2020.6.20=py38_0
+  - click=7.1.2=py_0
+  - flask=1.1.2=py_0
+  - itsdangerous=1.1.0=py_0
+  - jinja2=2.11.2=py_0
   - libcxx=10.0.0=1
   - libedit=3.1.20191231=haf1e3a3_0
   - libffi=3.3=h0a44026_1
+  - markupsafe=1.1.1=py38h1de35cc_0
   - ncurses=6.2=h0a44026_1
   - openssl=1.1.1g=h1de35cc_0
   - pip=20.1.1=py38_1
@@ -15,6 +20,7 @@ dependencies:
   - setuptools=47.3.1=py38_0
   - sqlite=3.32.3=hffcf06c_0
   - tk=8.6.10=hb0a8c7a_0
+  - werkzeug=1.0.1=py_0
   - wheel=0.34.2=py38_0
   - xz=5.2.5=h1de35cc_0
   - zlib=1.2.11=h1de35cc_3
