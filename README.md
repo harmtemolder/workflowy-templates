@@ -15,11 +15,5 @@ This tool helps you generate a list for a given period of time.
 ## About the Python version
 * I wrote the original calendar generator in Node.js but I am now in the process of rebuilding it in Python so it can run on a free server on PythonAnywhere.com.
 * It's a port from what I built on [Handlebars.js](https://handlebarsjs.com/) through [pybars3](https://github.com/wbond/pybars3#readme)
-* To set up a Conda environment with all dependencies in place, run this from within the `python` folder:
-```shell
-conda env create -f environment.yml
-```
-* Note to self: Run this to update the `environment.yml` file:
-```shell
-conda env export > environment.yml
-```
+* To set up a Conda environment with all dependencies in place, run `./setup.sh` from within the `python` folder
+* Start it with `./start.sh` (or `./debug.sh` to debug)
