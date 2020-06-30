@@ -5,6 +5,7 @@ from flask import Flask, render_template, request
 from flask_assets import Environment, Bundle
 
 from defaults import default_context
+from generate import generate_html_list
 from process import fill_gaps, add_month_names, add_day_names
 
 # Register Flask app and stylesheets
@@ -43,6 +44,12 @@ def index():
 
         # Overwrite defaults with payload
         context.update(request_form)
+
+        # If `generate` has been clicked, generate an `html_list`
+        if request_form['generate'] == 'true':
+            context['html_list'] = generate_html_list(context)
+        elif 'html_list' in context:
+            del context['html_list']
 
     # Add month and day names, if one of the default languages is selected
     context = add_month_names(context)

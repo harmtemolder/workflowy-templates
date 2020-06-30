@@ -1,3 +1,10 @@
+# Processed scripts and stylesheets
+static/*.js
+static/*.css
+
+# PyCharm
+.idea
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

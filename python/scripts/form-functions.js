@@ -109,7 +109,7 @@ $(document).ready(function documentReadyFunction() {
     // Add a hint how to copy the selected text, if it doesn't exist yet
     if ($('#copy_hint').length === 0) {
       const isMac = (navigator.platform.indexOf('Mac') > -1);
-      $(this).after(`<span id='copy_hint'> (press ${isMac ? 'cmd ⌘' : 'Ctrl'} + C to copy)</span>`);
+      $(this).after(`<span id='copy_hint'>&nbsp;(press ${isMac ? 'cmd ⌘' : 'Ctrl'} + C to copy)</span>`);
     }
 
     pushDataLayerEvent(
