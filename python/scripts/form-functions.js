@@ -28,46 +28,46 @@ $(document).ready(function documentReadyFunction() {
   });
 
   // When one of the "level-for" checkboxes changes update the form accordingly
-  $('input[name^="level-for-"]').change(function updateOnLevelChange() {
+  $('input[name^="level_for_"]').change(function updateOnLevelChange() {
     const changed = $(this).attr('name');
-    let weeks = $('input[name="level-for-weeks"]').prop('checked');
-    let months = $('input[name="level-for-months"]').prop('checked');
+    let weeks = $('input[name="level_for_weeks"]').prop('checked');
+    let months = $('input[name="level_for_months"]').prop('checked');
 
     if (!weeks && !months) {
       // Make sure at least one of the two levels is selected at all times
-      if (changed === 'level-for-weeks') {
-        $('input[name="level-for-months"]').prop('checked', true);
+      if (changed === 'level_for_weeks') {
+        $('input[name="level_for_months"]').prop('checked', true);
         months = true;
       } else {
-        $('input[name="level-for-weeks"]').prop('checked', true);
+        $('input[name="level_for_weeks"]').prop('checked', true);
         weeks = true;
       }
     }
 
     if (!weeks) {
-      $('.checkbox:has(input[name="level-for-weeks"])').addClass('off');
+      $('.checkbox:has(input[name="level_for_weeks"])').addClass('off');
     } else {
-      $('.checkbox:has(input[name="level-for-weeks"])').removeClass('off');
+      $('.checkbox:has(input[name="level_for_weeks"])').removeClass('off');
     }
 
     if (!months) {
-      $('.checkbox:has(input[name="level-for-months"])').addClass('off');
+      $('.checkbox:has(input[name="level_for_months"])').addClass('off');
     } else {
-      $('.checkbox:has(input[name="level-for-months"])').removeClass('off');
+      $('.checkbox:has(input[name="level_for_months"])').removeClass('off');
     }
 
     $('input[name=generate]').val('false');
     $(this).closest('form').submit();
   });
 
-  // When one of the "-abbreviated" checkboxes changes update the form accordingly
-  $('input[name$="-abbreviated"]').change(function updateOnAbbreviatedChange() {
+  // When one of the "_abbreviated" checkboxes changes update the form accordingly
+  $('input[name$="_abbreviated"]').change(function updateOnAbbreviatedChange() {
     $('input[name=generate]').val('false');
     $(this).closest('form').submit();
   });
 
   // When the form is submitted, get some things sorted first
-  $('#calendar-generator-form').submit(function onSubmitActions() {
+  $('#calendar_generator_form').submit(function onSubmitActions() {
     (function trackFormSubmitEvent() {
       if ($('input[name=generate]').val() === 'false') {
         pushDataLayerEvent(
@@ -77,7 +77,7 @@ $(document).ready(function documentReadyFunction() {
           false,
           false,
           {
-            context: $('#calendar-generator-form').serialize(),
+            context: $('#calendar_generator_form').serialize(),
           },
         );
       } else {
@@ -88,7 +88,7 @@ $(document).ready(function documentReadyFunction() {
           false,
           false,
           {
-            context: $('#calendar-generator-form').serialize(),
+            context: $('#calendar_generator_form').serialize(),
           },
         );
       }
@@ -100,16 +100,16 @@ $(document).ready(function documentReadyFunction() {
 
   // When a selector link is clicked, select the text referenced in the link's
   // data-selector attribute using the selectText function
-  $('.select-link').on('click', function clickToSelect(e) {
+  $('.select_link').on('click', function clickToSelect(e) {
     e.preventDefault();
 
     const selector = $(this).data('selector');
     $(selector).selectText();
 
     // Add a hint how to copy the selected text, if it doesn't exist yet
-    if ($('#copy-hint').length === 0) {
+    if ($('#copy_hint').length === 0) {
       const isMac = (navigator.platform.indexOf('Mac') > -1);
-      $(this).after(`<span id='copy-hint'> (press ${isMac ? 'cmd ⌘' : 'Ctrl'} + C to copy)</span>`);
+      $(this).after(`<span id='copy_hint'> (press ${isMac ? 'cmd ⌘' : 'Ctrl'} + C to copy)</span>`);
     }
 
     pushDataLayerEvent(
@@ -119,7 +119,7 @@ $(document).ready(function documentReadyFunction() {
       false,
       false,
       {
-        context: $('#calendar-generator-form').serialize(),
+        context: $('#calendar_generator_form').serialize(),
       },
     );
   });

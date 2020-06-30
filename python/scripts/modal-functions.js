@@ -40,9 +40,9 @@ function pushCloseModalEvent(eventLabel) {
 
 if (getCookie(cookieName) === '') {
   window.addEventListener('DOMContentLoaded', () => {
-    const modalOverlay = document.getElementById('modal-overlay');
-    const modalDarken = document.getElementById('modal-darken');
-    const closeButton = document.getElementsByClassName('modal-close')[0];
+    const modalOverlay = document.getElementById('modal_overlay');
+    const modalDarken = document.getElementById('modal_darken');
+    const closeButton = document.getElementsByClassName('modal_close')[0];
 
     modalOverlay.style.display = 'flex';
 
@@ -64,17 +64,17 @@ if (getCookie(cookieName) === '') {
         pushCloseModalEvent('by clicking outside of the modal');
 
         event.preventDefault();
-      } else if (event.target.classList.contains('modal-button')) {
+      } else if (event.target.classList.contains('modal_button')) {
         // When the user clicks on one of the buttons in the modal, close it
 
         modalOverlay.style.display = 'none';
         setModalCookie(cookieName);
 
-        if (event.target.classList.contains('new-user')) {
+        if (event.target.classList.contains('new_user')) {
           pushCloseModalEvent('by clicking the "new user" button');
-        } else if (event.target.classList.contains('free-user')) {
+        } else if (event.target.classList.contains('free_user')) {
           pushCloseModalEvent('by clicking the "free user" button');
-        } else if (event.target.classList.contains('pro-user')) {
+        } else if (event.target.classList.contains('pro_user')) {
           pushCloseModalEvent('by clicking the "pro user" button');
         }
 

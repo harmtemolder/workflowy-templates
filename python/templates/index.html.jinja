@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'context.ayer'
+            ? '&l=' + l
+            : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'context.ayer', 'GTM-K35L64P');
+    </script>
+    {% assets "styles_scss" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}"/>
+    {% endassets %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    {% assets "scripts_js" %}
+    <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <link rel="mask-icon" href="{{ url_for('static', filename='icon.svg') }}" color="rgb(0, 102, 153)">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <title>WorkFlowy Calendar Generator by @harmtemolder</title>
+  </head>
+
+  <body>
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K35L64P" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <div class="page">
+      <h1>WorkFlowy Calendar Generator</h1>
+      <p class="note">Use this generator to easily fill your WorkFlowy calendar for a given period of time.</p>
+      <ul>
+        <form id="calendar_generator_form" action="/" method="post">
+          <li>
+            I would like to generate a list for
+            <select name="period">
+              <option value="full year" {% if context.period == "full year" %} selected="selected" {% endif %}>an entire year,</option>
+              <option value="custom" {% if context.period == "custom" %} selected="selected" {% endif %}>a time period I want to set myself</option>
+            </select>
+            <br/>
+            <ul>
+              <li id="period_full_year" {% if context.period == "custom" %} class="disabled" {% endif %}>namely
+                <input type="number" name="year" value="{{ context.year }}" {% if context.period == "custom" %} disabled="disabled" {% endif %}/>
+              </li>
+              <li id="period_custom" {% if context.period == "full year" %} class="disabled" {% endif %}>
+                namely from
+                <input type="date" name="from_date" value="{{ context.from_date }}" {% if context.period == "full year" %} disabled="disabled" {% endif %}>
+                up to and including
+                <input type="date" name="to_date" value="{{ context.to_date }}" {% if context.period == "full year" %} disabled="disabled" {% endif %}>
+              </li>
+            </ul>
+          </li>
+          <li>
+            Ordered with
+            <select name="order">
+              <option value="descending" {% if context.order == "descending" %} selected="selected" {% endif %}>the last date, {{ context.to_date_string }},</option>
+              <option value="ascending" {% if context.order == "ascending" %} selected="selected" {% endif %}>the first date, {{ context.from_date_string }},</option>
+            </select>
+            at the top of the list
+          </li>
+          <li>
+            It should include levels for
+            <ul class="nobullets">
+              <li>
+                <div class="checkbox {% if context.level_for_months != "true" %} off {% endif %}"><input type="checkbox" id="level_for_months" name="level_for_months" value="true" {% if context.level_for_months == "true" %} checked="checked" {% endif %}>
+                  <label for="level_for_months"></label>
+                </div>
+                months
+              </li>
+              <li>
+                <div class="checkbox {% if context.level_for_weeks != "true" %} off {% endif %}"><input type="checkbox" id="level_for_weeks" name="level_for_weeks" value="true" {% if context.level_for_weeks == "true" %} checked="checked" {% endif %}>
+                  <label for="level_for_weeks"></label>
+                </div>
+                weeks
+              </li>
+            </ul>
+          </li>
+          {% if context.level_for_months == "true" %}
+            <li>
+              With the month names in
+              <select name="month_language">
+                <option value="english" {% if context.month_language == "english" %} selected="selected" {% endif %}>English</option>
+                <option value="dutch" {% if context.month_language == "dutch" %} selected="selected" {% endif %}>Dutch</option>
+                <option value="custom" {% if context.month_language == "custom" %} selected="selected" {% endif %}>some other way</option>
+              </select>
+              and formatted as follows:
+              <ul>
+                <li {% if context.month_language == "custom" %} class="disabled" {% endif %}>
+                  <select name="month_case" {% if context.month_language == "custom" %} disabled="disabled" {% endif %}>
+                    <option value="upper" {% if context.month_case == "upper" %} selected="selected" {% endif %}>UPPER CASE</option>
+                    <option value="lower" {% if context.month_case == "lower" %} selected="selected" {% endif %}>lower case</option>
+                    <option value="proper" {% if context.month_case == "proper" %} selected="selected" {% endif %}>Proper Case</option>
+                  </select>
+                </li>
+                <li>
+                  <select name="month_number" {% if context.month_language == "custom" %} disabled="disabled" {% endif %}>
+                    <option value="prefix" {% if context.month_number == "prefix" %} selected="selected" {% endif %}>prefixed with</option>
+                    <option value="suffix" {% if context.month_number == "suffix" %} selected="selected" {% endif %}>suffixed with</option>
+                    <option value="none" {% if context.month_number == "none" %} selected="selected" {% endif %}>without</option>
+                  </select>
+                  the
+                  <select name="month_number_or_year" {% if context.month_language == "custom" %} disabled="disabled" {% endif %}>
+                    <option value="month" {% if context.month_number_or_year == "month" %} selected="selected" {% endif %}>month's number</option>
+                    <option value="year" {% if context.month_number_or_year == "year" %} selected="selected" {% endif %}>year</option>
+                  </select>
+                  , separated by "
+                  <input type="text" class="shortTextField" name="month_separator" value="{{ context.month_separator }}">
+                  "
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}01{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_0" value="{{ context.month_name_0 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}01{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}02{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_1" value="{{ context.month_name_1 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}02{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}03{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_2" value="{{ context.month_name_2 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}03{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}04{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_3" value="{{ context.month_name_3 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}04{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}05{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_4" value="{{ context.month_name_4 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}05{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}06{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_5" value="{{ context.month_name_5 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}06{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}07{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_6" value="{{ context.month_name_6 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}07{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}08{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_7" value="{{ context.month_name_7 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}08{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}09{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_8" value="{{ context.month_name_8 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}09{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}10{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_9" value="{{ context.month_name_9 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}10{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}11{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_10" value="{{ context.month_name_10 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}11{% endif %}{% endif %}
+                </li>
+                <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                  {% if context.month_number == "prefix" %}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}12{% endif %}{{ context.month_separator }}{% endif %}
+                  <input type="text" class="longTextField" name="month_name_11" value="{{ context.month_name_11 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                  {% if context.month_number == "suffix" %}{{ context.month_separator }}{% if context.month_number_or_year == "year" %}{{ context.year }}{% endif %}{% if context.month_number_or_year == "month" %}12{% endif %}{% endif %}
+                </li>
+              </ul>
+            </li>
+          {% endif %}
+          {% if context.level_for_weeks == "true" %}
+          <li>
+            The weeks I would like to have named according to
+            <select name="week_format">
+              <option value="number" {% if context.week_format == "number" %} selected="selected" {% endif %}>their week number*</option>
+              <option value="date" {% if context.week_format == "date" %} selected="selected" {% endif %}>the dates that fall within each week</option>
+            </select>
+            {% if context.week_format == "number" %}<br /><span class="note">* Since week numbering varies between countries, I've decided to use <a href="https://en.wikipedia.org/wiki/ISO_week_date" target="_blank"> the ISO week date system</a>, which is part of <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601</a>. Basically, that means that (1) weeks start on Monday, (2) each year has either 52 or 53 weeks, (3) week 1 is the week in which the Gregorian year's first Thursday falls, (4) the last week of the year, either 52 or 53, is the week in which the Gregorian year's last Thursday falls</span>{% endif %}
+            <ul>
+              {% if context.week_format == "number" %}
+              <li {% if context.week_format != "number" %} class="disabled" {% endif %}>
+                <select name="week_number" {% if context.week_format != "number" %} disabled="disabled" {% endif %}>
+                  <option value="prefix" {% if context.week_number == "prefix" %} selected="selected" {% endif %}>prefixed with</option>
+                  <option value="suffix" {% if context.week_number == "suffix" %} selected="selected" {% endif %}>suffixed with</option>
+                  <option value="none" {% if context.week_number == "none" %} selected="selected" {% endif %}>without</option>
+                </select>
+                "
+                <input type="text" class="mediumTextField" {% if context.week_format != "number" %} disabled="disabled" {% endif %} name="week_number_label" value="{{ context.week_number_label }}" />
+                "
+              </li>
+              {% endif %}
+              {% if context.week_format == "date" %}
+              <li {% if context.week_format != "date" %} class="disabled" {% endif %}>
+                <select name="week_date" {% if context.week_format != "date" %} disabled="disabled" {% endif %}>
+                  <option value="prefix" {% if context.week_date == "prefix" %} selected="selected" {% endif %}>prefixed with</option>
+                  <option value="suffix" {% if context.week_date == "suffix" %} selected="selected" {% endif %}>suffixed with</option>
+                  <option value="none" {% if context.week_date == "none" %} selected="selected" {% endif %}>without</option>
+                </select>
+                the month names formatted
+                {% if context.level_for_months == "true" %} like the month names above{% endif %}
+                {% if level_for_months != "true" %} as follows:
+                <ul>
+                  <li>
+                    In
+                    <select name="month_language">
+                      <option value="english" {% if context.month_language == "english" %} selected="selected" {% endif %}>English</option>
+                      <option value="dutch" {% if context.month_language == "dutch" %} selected="selected" {% endif %}>Dutch</option>
+                      <option value="custom" {% if context.month_language == "custom" %} selected="selected" {% endif %}>some other way</option>
+                    </select>
+                  </li>
+                  <li {% if context.month_language == "custom" %} class="disabled" {% endif %}>
+                    <select name="month_case" {% if context.month_language == "custom" %} disabled="disabled" {% endif %}>
+                      <option value="upper" {% if context.month_case == "upper" %} selected="selected" {% endif %}>UPPER CASE</option>
+                      <option value="lower" {% if context.month_case == "lower" %} selected="selected" {% endif %}>lower case</option>
+                      <option value="proper" {% if context.month_case == "proper" %} selected="selected" {% endif %}>Proper Case</option>
+                    </select>
+                  </li>
+                  <li>Like so:
+                    <ul>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_0" value="{{ context.month_name_0 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_1" value="{{ context.month_name_1 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_2" value="{{ context.month_name_2 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_3" value="{{ context.month_name_3 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_4" value="{{ context.month_name_4 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+
+                        <input type="text" class="longTextField" name="month_name_5" value="{{ context.month_name_5 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_6" value="{{ context.month_name_6 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_7" value="{{ context.month_name_7 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_8" value="{{ context.month_name_8 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_9" value="{{ context.month_name_9 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_10" value="{{ context.month_name_10 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                      <li {% if context.month_language != "custom" %} class="disabled" {% endif %}>
+                        <input type="text" class="longTextField" name="month_name_11" value="{{ context.month_name_11 }}" {% if context.month_language != "custom" %} disabled="disabled" {% endif %}>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                  Separated by "
+                  <input type="text" class="shortTextField" {% if context.week_format != "date" %} disabled="disabled" {% endif %} name="week_date_separator" value="{{ context.week_date_separator }}">
+                  "
+                  </li>
+                </ul>
+                {% endif %}
+              </li>
+            </ul>
+            <ul class="nobullets {% if context.week_format != "date" %} disabled {% endif %}">
+              <li>
+                <div class="checkbox {% if context.week_date_abbreviated != "true" %} off {% endif %}"><input type="checkbox" id="week_date_abbreviated" name="week_date_abbreviated" value="true" {% if context.week_date_abbreviated == "true" %} checked="checked" {% endif %}>
+                  <label for="week_date_abbreviated"></label>
+                </div>
+                And abbreviated to only the first
+                <input type="text" class="shortTextField" name="week_date_abbreviated_length" value="{{ context.week_date_abbreviated_length }}" />
+                letters
+              </li>
+              {% endif %}
+            </ul>
+          </li>
+          {% endif %}
+          <li>
+            I would like the days of the week in
+            <select name="day_language">
+              <option value="english" {% if context.day_language == "english" %} selected="selected" {% endif %}>English</option>
+              <option value="dutch" {% if context.day_language == "dutch" %} selected="selected" {% endif %}>Dutch</option>
+              <option value="custom" {% if context.day_language == "custom" %} selected="selected" {% endif %}>some custom format</option>
+            </select>
+            and formatted as follows:
+            <ul>
+              <li {% if context.day_language == "custom" %} class="disabled" {% endif %}>
+                <select name="day_case" {% if context.day_language == "custom" %} disabled="disabled" {% endif %}>
+                  <option value="upper" {% if context.day_case == "upper" %} selected="selected" {% endif %}>UPPER CASE</option>
+                  <option value="lower" {% if context.day_case == "lower" %} selected="selected" {% endif %}>lower case</option>
+                  <option value="proper" {% if context.day_case == "proper" %} selected="selected" {% endif %}>Proper Case</option>
+                </select>
+              </li>
+            </ul>
+            <ul class="nobullets {% if context.day_language == "custom" %} disabled {% endif %}">
+              <li>
+                <div class="checkbox {% if context.day_abbreviated != "true" %} off {% endif %}"><input type="checkbox" id="day_abbreviated" name="day_abbreviated" value="true" {% if context.day_abbreviated == "true" %} checked="checked" {% endif %}>
+                  <label for="day_abbreviated"></label>
+                </div>
+                abbreviated to only the first
+                <input type="text" class="shortTextField" name="day_abbreviated_length" value="{{ context.day_abbreviated_length }}" />
+                letters
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <select name="day_number">
+                  <option value="prefix" {% if context.day_number == "prefix" %} selected="selected" {% endif %}>prefixed with</option>
+                  <option value="suffix" {% if context.day_number == "suffix" %} selected="selected" {% endif %}>suffixed with</option>
+                  <option value="none" {% if context.day_number == "none" %} selected="selected" {% endif %}>without</option>
+                </select>
+                the day's number, separated by "
+                <input type="text" class="shortTextField" name="day_separator" value="{{ context.day_separator }}" />
+                "
+              </li>
+              <li {% if context.day_language != "custom" %} class="disabled" {% endif %}>
+                {% if context.day_number == "prefix" %}08{{ context.day_separator }}{% endif %}
+                <input type="text" class="longTextField" name="day_name_1" value="{{ context.day_name_1 }}" {% if context.day_language != "custom" %} disabled="disabled" {% endif %}>
+                {% if context.day_number == "suffix" %}{{ context.day_separator }}08{% endif %}
+              </li>
+              <li {% if context.day_language != "custom" %} class="disabled" {% endif %}>
+                {% if context.day_number == "prefix" %}09{{ context.day_separator }}{% endif %}
+                <input type="text" class="longTextField" name="day_name_2" value="{{ context.day_name_2 }}" {% if context.day_language != "custom" %} disabled="disabled" {% endif %}>
+                {% if context.day_number == "suffix" %}{{ context.day_separator }}09{% endif %}
+              </li>
+              <li {% if context.day_language != "custom" %} class="disabled" {% endif %}>
+                {% if context.day_number == "prefix" %}10{{ context.day_separator }}{% endif %}
+                <input type="text" class="longTextField" name="day_name_3" value="{{ context.day_name_3 }}" {% if context.day_language != "custom" %} disabled="disabled" {% endif %}>
+                {% if context.day_number == "suffix" %}{{ context.day_separator }}10{% endif %}
+              </li>
+              <li {% if context.day_language != "custom" %} class="disabled" {% endif %}>
+                {% if context.day_number == "prefix" %}11{{ context.day_separator }}{% endif %}
+                <input type="text" class="longTextField" name="day_name_4" value="{{ context.day_name_4 }}" {% if context.day_language != "custom" %} disabled="disabled" {% endif %}>
+                {% if context.day_number == "suffix" %}{{ context.day_separator }}11{% endif %}
+              </li>
+              <li {% if context.day_language != "custom" %} class="disabled" {% endif %}>
+                {% if context.day_number == "prefix" %}12{{ context.day_separator }}{% endif %}
+                <input type="text" class="longTextField" name="day_name_5" value="{{ context.day_name_5 }}" {% if context.day_language != "custom" %} disabled="disabled" {% endif %}>
+                {% if context.day_number == "suffix" %}{{ context.day_separator }}12{% endif %}
+              </li>
+              <li {% if context.day_language != "custom" %} class="disabled" {% endif %}>
+                {% if context.day_number == "prefix" %}13{{ context.day_separator }}{% endif %}
+                <input type="text" class="longTextField" name="day_name_6" value="{{ context.day_name_6 }}" {% if context.day_language != "custom" %} disabled="disabled" {% endif %}>
+                {% if context.day_number == "suffix" %}{{ context.day_separator }}13{% endif %}
+              </li>
+              <li {% if context.day_language != "custom" %} class="disabled" {% endif %}>
+                {% if context.day_number == "prefix" %}14{{ context.day_separator }}{% endif %}
+                <input type="text" class="longTextField" name="day_name_7" value="{{ context.day_name_7 }}" {% if context.day_language != "custom" %} disabled="disabled" {% endif %}>
+                {% if context.day_number == "suffix" %}{{ context.day_separator }}14{% endif %}
+              </li>
+            </ul>
+          </li>
+          <li>
+            <input type="hidden" name="generate" value="true" />
+            <input type="hidden" name="client_id" value="" />
+            <input id="generate" type="submit" class="link" value="Generate"/>
+          </li>
+        </form>
+        {% if context.html_list %}
+          {{ context.html_list }}
+          <script>
+            (function scrollToGenerate() {
+              $('html, body').animate({
+                scrollTop: $("#generate").offset().top
+              }, 1000);
+            }());
+          </script>
+        {% endif %}
+      </ul>
+    </div>
+    <div id="modal_overlay">
+      <div id="modal_darken"></div>
+      <div id="warning_modal">
+        <div class="modal_content">
+          <div class="modal_close">
+            <svg width="20" height="20" viewbox="0 0 20 20" fill="none" stroke-linecap="round" stroke="rgb(92, 96, 98)">
+              <line x1="1" y1="1" x2="19" y2="19"></line>
+              <line x1="19" y1="1" x2="1" y2="19"></line>
+            </svg>
+            <div class="modal_close_hover"></div>
+          </div>
+          <h1>Read this first!</h1>
+          <p>Using this calendar generator to fill your WorkFlowy quickly goes towards the monthly quota of a free account. So make sure you know what you're doing. If in doubt, select the option that applies to you:</p>
+          <p>
+            <a href="#" class="modal_button new_user">"<strong>I don't have a WorkFlowy account yet</strong>, but would appreciate the 100 extra free items I get every month when I sign up using your following referral link."</a>
+          </p>
+          <p class="centered">
+            <a href="https://workflowy.com/invite/6b9f5645.lnx" target="_blank">my referral link</a>
+          </p>
+          <p>
+            <a href="#" class="modal_button free_user">
+              <strong>"I have a free account</strong>, but will keep my monthly quota in check by selecting a smaller period of time. I might even share my own WorkFlowy referral link to get more free items per month."</a>
+          </p>
+          <p class="centered">
+            <a href="https://workflowy.com/referrals/" target="_blank">your referral link</a>
+          </p>
+          <p>
+            <a href="#" class="modal_button pro_user">
+              <strong>"I have a pro account</strong>, or will get one when I reach my monthly quota, so don't worry about me."</a>
+          </p>
+          <p>In any case, I won't bother you again: This popup will only be shown once.</p>
+          <p class="signed">&mdash;
+            <a href="https://twitter.com/harmtemolder" target="_blank">Harm te Molder</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div id="label_container">
+      <a href="mailto:mail@harmtemolder.nl" target="_blank"><div id="feedback" class="label" data-toggle="tooltip" data-placement="left" data-html="true" title="Do you have any tips on how to improve the WorkFlow Calendar Generator? Don't hesitate to mail me using this button. <p class=&quot;signed&quot;>&mdash;Harm te Molder</p>">Feedback</div></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=mail%40harmtemolder.nl&item_name=WorkFlowy+Calendar+Generator&currency_code=EUR&source=url" target="_blank"><div id="donate" class="label" data-toggle="tooltip" data-placement="left" data-html="true" title="Did my tool help you out? Then consider helping me out by donating towards the monthly hosting costs using this button. How about €4? <strong>Thanks, you're awesome!</strong><p class=&quot;signed&quot;>&mdash;Harm te Molder</p>">Donate</div></a>
+    </div>
+  </body>
+
+</html>
