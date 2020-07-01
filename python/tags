@@ -1,0 +1,52 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Bundle	index.py	/^from flask_assets import Environment, Bundle$/;"	i
+Environment	index.py	/^from flask_assets import Environment, Bundle$/;"	i
+Flask	index.py	/^from flask import Flask, render_template, request$/;"	i
+add_day_names	index.py	/^from process import fill_gaps, add_month_names, add_day_names$/;"	i
+add_day_names	process.py	/^def add_day_names(context):$/;"	f
+add_month_names	index.py	/^from process import fill_gaps, add_month_names, add_day_names$/;"	i
+add_month_names	process.py	/^def add_month_names(context):$/;"	f
+app	index.py	/^app = Flask(__name__)$/;"	v
+assets	index.py	/^assets = Environment(app)$/;"	v
+camel_case_to_underscore	generate.py	/^def camel_case_to_underscore(string, print_result=False):$/;"	f
+close_list	generate.py	/^def close_list(num_levels):$/;"	f
+context	generate.py	/^        context = json.loads(dummy_context.read())$/;"	v
+convert_case	process.py	/^def convert_case(string, case):$/;"	f
+date_list_to_html	generate.py	/^def date_list_to_html(date_list, include_months, month_names, month_number,$/;"	f
+date_range	generate.py	/^from pandas import date_range$/;"	i
+datetime	defaults.py	/^import datetime$/;"	i
+datetime	generate.py	/^from datetime import datetime$/;"	i
+default_context	defaults.py	/^default_context = {$/;"	v
+default_context	index.py	/^from defaults import default_context$/;"	i
+default_names	defaults.py	/^    default_names = json.loads(default_names_json.read())$/;"	v
+default_names	process.py	/^from defaults import default_names$/;"	i
+fill_gaps	index.py	/^from process import fill_gaps, add_month_names, add_day_names$/;"	i
+fill_gaps	process.py	/^def fill_gaps(context):$/;"	f
+filters	index.py	/^    filters='jsmin',$/;"	v
+filters	index.py	/^    filters='pyscss',$/;"	v
+generate_date_list	generate.py	/^def generate_date_list(from_date_string, to_date_string, ascending):$/;"	f
+generate_day	generate.py	/^def generate_day(date, day_names, day_number, day_separator, day_abbreviated,$/;"	f
+generate_html_list	generate.py	/^def generate_html_list(context):$/;"	f
+generate_html_list	index.py	/^from generate import generate_html_list$/;"	i
+generate_month	generate.py	/^def generate_month(date, month_names, month_number, month_number_or_year,$/;"	f
+generate_week	generate.py	/^def generate_week(date, week_format, week_number, week_number_label,$/;"	f
+generate_year	generate.py	/^def generate_year(date):$/;"	f
+get_week_string	generate.py	/^def get_week_string(date, week_date, week_date_separator, include_months,$/;"	f
+html_list	generate.py	/^    html_list = generate_html_list(context)$/;"	v
+index	index.py	/^def index():$/;"	f
+js	index.py	/^js = Bundle($/;"	v
+json	defaults.py	/^import json$/;"	i
+json	generate.py	/^import json$/;"	i
+json	index.py	/^import json$/;"	i
+output	index.py	/^    output='scripts.js')$/;"	v
+output	index.py	/^    output='styles.css')$/;"	v
+re	generate.py	/^import re$/;"	i
+render_template	index.py	/^from flask import Flask, render_template, request$/;"	i
+request	index.py	/^from flask import Flask, render_template, request$/;"	i
+scss	index.py	/^scss = Bundle($/;"	v
+sys	index.py	/^import sys$/;"	i

@@ -1,4 +1,5 @@
-from datetime import datetime
+from calendar import monthrange
+from datetime import datetime, timedelta
 import json
 import re
 
@@ -30,7 +31,7 @@ def generate_date_list(from_date_string, to_date_string, ascending):
 
 
 def get_week_string(date, week_date, week_date_separator, include_months,
-                    week_month_mames, week_date_abbreviated,
+                    week_month_names, week_date_abbreviated,
                     week_date_abbreviated_length):
     """This function takes a date and returns a string of two numbers (e.g.
     '01–07') where (1) the first is the date's week's Monday, or '01' if the
@@ -42,12 +43,78 @@ def get_week_string(date, week_date, week_date_separator, include_months,
     :param week_date:
     :param week_date_separator:
     :param include_months:
-    :param week_month_mames:
+    :param week_month_names:
     :param week_date_abbreviated:
     :param week_date_abbreviated_length:
     :return:
     """
 
+    # Get current date's week's Monday and Sunday
+    monday = date - timedelta(date.isoweekday() - 1)
+    sunday = monday + timedelta(6)
+
+    # Get month names for all three dates
+    monday_month = week_month_names[str(monday.month - 1)]
+    date_month = week_month_names[str(date.month - 1)]
+    sunday_month = week_month_names[str(sunday.month - 1)]
+
+    if week_date_abbreviated:
+        length = int(week_date_abbreviated_length)
+        monday_month = monday_month[:length]
+        date_month = date_month[:length]
+        sunday_month = sunday_month[:length]
+
+    first_day = monday.strftime('%d')
+    last_day = sunday.strftime('%d')
+
+    if monday.month == sunday.month:
+        # both the week's Monday and Sunday fall in the same month so includeMonths doesn't matter
+
+        if first_day == last_day:
+            week_string = first_day
+        else:
+            week_string = '{}–{}'.format(first_day, last_day)
+
+        if week_date == 'prefix':
+            week_string = '{0}{1}{2}'.format(
+                date_month, week_date_separator, week_string)
+        elif week_date == 'suffix':
+            week_string = '{2}{1}{0}'.format(
+                date_month, week_date_separator, week_string)
+    elif not include_months:
+        # i.e. there is no level for months, so the week should contain days
+        # from two months
+
+        if week_date == 'prefix':
+            week_string = '{0}{1}{2}-{3}{1}{4}'.format(
+                monday_month, week_date_separator, first_day, sunday_month,
+                last_day)
+        elif week_date == 'suffix':
+            week_string = '{2}{1}{0}-{4}{1}{3}'.format(
+                monday_month, week_date_separator, first_day, sunday_month,
+                last_day)
+        else:
+            week_string = '{}–{}'.format(first_day, last_day)
+    else:
+        if date.month != monday.month:
+            # i.e. the week's Monday falls in the previous month and the week
+            # should be divided over two months
+            first_day = '01'
+        else:
+            # i.e. the week's Sunday falls in the next month and the week
+            # should be divided over two months
+            last_day = '{0:02d}'.format(monthrange(date.year, date.month)[1])
+
+        week_string = '{}–{}'.format(first_day, last_day)
+
+        if week_date == 'prefix':
+            week_string = '{0}{1}{2}'.format(
+                date_month, week_date_separator, week_string)
+        elif week_date == 'suffix':
+            week_string = '{2}{1}{0}'.format(
+                date_month, week_date_separator, week_string)
+
+    return week_string
 
 def generate_day(date, day_names, day_number, day_separator, day_abbreviated,
                  day_abbreviated_length):
@@ -62,6 +129,18 @@ def generate_day(date, day_names, day_number, day_separator, day_abbreviated,
     :param day_abbreviated_length:
     :return:
     """
+    day = day_names[str(date.isoweekday())]
+
+    # TODO I already did this, right?
+    # if day_abbreviated:
+    #     day = day[:int(day_abbreviated_length)]
+
+    if day_number == 'prefix':
+        day = '{0}{1}{2}'.format(date.day, day_separator, day)
+    elif day_number == 'suffix':
+        day = '{2}{1}{0}'.format(date.day, day_separator, day)
+
+    return '<li>{}</li>'.format(day)
 
 
 def generate_week(date, week_format, week_number, week_number_label,
@@ -84,6 +163,21 @@ def generate_week(date, week_format, week_number, week_number_label,
     :return:
     """
 
+    if week_format == 'number':
+        week = str(date.isoweek)
+
+        if week_number == 'prefix':
+            week = '{0}{1}'.format(week_number_label, week)
+        elif week_number == 'suffix':
+            week = '{1}{0}'.format(week_number_label, week)
+
+    else:
+        week = get_week_string(date, week_date, week_date_separator, include_months,
+                    week_month_names, week_date_abbreviated,
+                    week_date_abbreviated_length)
+
+    return '<li>{}<ul>'.format(week)
+
 
 def generate_month(date, month_names, month_number, month_number_or_year,
                    month_separator):
@@ -98,6 +192,20 @@ def generate_month(date, month_names, month_number, month_number_or_year,
     :return:
     """
 
+    month = month_names[str(date.month - 1)]
+
+    if month_number_or_year == 'month':
+        string_to_add = date.strftime('%m')
+    else:
+        string_to_add = date.strftime('%Y')
+
+    if month_number == 'prefix':
+        month = '{0}{1}{2}'.format(string_to_add, month_separator, month)
+    elif month_number == 'suffix':
+        month = '{2}{1}{0}'.format(string_to_add, month_separator, month)
+
+    return '<li>{}<ul>'.format(month)
+
 
 def generate_year(date):
     """Return a formatted list item for the requested year in the requested
@@ -106,7 +214,7 @@ def generate_year(date):
     :param date:
     :return:
     """
-
+    return '<li>{}<ul>'.format(date.year)
 
 def close_list(num_levels):
     """Return closing HTML tags for the open list items and lists
@@ -114,6 +222,7 @@ def close_list(num_levels):
     :param num_levels:
     :return:
     """
+    return '</li></ul>'  * num_levels
 
 
 def date_list_to_html(date_list, include_months, month_names, month_number,
@@ -210,7 +319,7 @@ def date_list_to_html(date_list, include_months, month_names, month_number,
                 # Add closing of previous month
                 day_html = close_list(1) + day_html
         elif (include_weeks and
-              (previous_date.isoweekday + date.isoweekday == 8)):
+              (previous_date.isoweekday() + date.isoweekday() == 8)):
             # Add opening of new week
             day_html = generate_week(date, week_format, week_number,
                                      week_number_label, week_date,
