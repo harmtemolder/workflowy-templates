@@ -42,6 +42,10 @@ def index():
         # Re-add items for disabled checkboxes
         request_form = fill_gaps(request_form)
 
+        # Add day and month names
+        request_form = add_day_names(request_form)
+        request_form = add_month_names(request_form)
+
         # Overwrite defaults with payload
         context.update(request_form)
 
