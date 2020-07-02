@@ -18,6 +18,9 @@ function pushDataLayerEvent(eventType, eventCategory, eventAction, eventLabel,
 
     window.dataLayer.push(eventPayload);
   } else {
-    console.warn('ga-functions.js: Failed to send the requested event because one of the required parameters was missing');
+    console.warn([
+      'ga-functions.js: Failed to send the requested event because one of the required parameters was missing. This is what I got: ',
+      arguments
+    ]);
   }
 }
