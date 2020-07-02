@@ -46,12 +46,13 @@ def calendar_generator():
         # Re-add items for disabled checkboxes
         request_form = fill_gaps(request_form)
 
-        # Add day and month names
-        request_form = add_day_names(request_form)
-        request_form = add_month_names(request_form)
 
         # Overwrite defaults with payload
         context.update(request_form)
+
+        # Add day and month names
+        context = add_day_names(context)
+        context = add_month_names(context)
 
         # If `generate` has been clicked, generate an `html_list`
         if request_form['generate'] == 'true':
