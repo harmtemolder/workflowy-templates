@@ -15,7 +15,7 @@ This tool helps you generate a list for a given period of time.
 ## About the Python version
 * I wrote the original calendar generator in Node.js but I am now in the process of rebuilding it in Python so it can run on a free server on PythonAnywhere.com
 * It's a port from what I built in Node.js through [Flask](http://flask.pocoo.org/) and [Jinja](https://palletsprojects.com/p/jinja/)
-* To set up a Conda environment with all dependencies in place, run `./setup.sh` from within the `python` folder
+* To set up a virtual environment with all dependencies in place, run `./setup.sh` from within the `python` folder. (Make it executable with `chmod +x setup.sh` if it isn't already.)
 * Start it with `./start.sh` (or `./debug.sh` to debug)
 
 ## Troubleshooting
