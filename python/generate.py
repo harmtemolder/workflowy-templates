@@ -164,7 +164,7 @@ def generate_week(date, week_format, week_number, week_number_label,
     """
 
     if week_format == 'number':
-        week = str(date.isoweek)
+        week = str(date.isocalendar()[1])
 
         if week_number == 'prefix':
             week = '{0}{1}'.format(week_number_label, week)
