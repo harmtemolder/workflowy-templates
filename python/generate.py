@@ -86,11 +86,11 @@ def get_week_string(date, week_date, week_date_separator, include_months,
         # from two months
 
         if week_date == 'prefix':
-            week_string = '{0}{1}{2}-{3}{1}{4}'.format(
+            week_string = '{0}{1}{2}–{3}{1}{4}'.format(
                 monday_month, week_date_separator, first_day, sunday_month,
                 last_day)
         elif week_date == 'suffix':
-            week_string = '{2}{1}{0}-{4}{1}{3}'.format(
+            week_string = '{2}{1}{0}–{4}{1}{3}'.format(
                 monday_month, week_date_separator, first_day, sunday_month,
                 last_day)
         else:
