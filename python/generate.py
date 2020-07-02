@@ -382,7 +382,7 @@ def generate_html_list(context):
     )
 
     return ('<li>____________________</li>'
-            '<li><a href="#" class="select_link" data_selector="#output">Select output</a></li>'
+            '<li><a href="#" class="select_link" data-selector="#output">Select output</a></li>'
             '<li>____________________</li>'
             '<span id="output">{}</span>'.format(html_list))
 
