@@ -1,7 +1,7 @@
 import json
 import sys
 
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 from flask_assets import Environment, Bundle
 
 from defaults import default_context
@@ -30,7 +30,11 @@ js = Bundle(
     output='scripts.js')
 assets.register('scripts_js', js)
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/')
+def go_to_calendar_generator():
+    return redirect('https://workflowy.pythonanywhere.com/calendar-generator/', code=301)
+
+@app.route('/calendar-generator/', methods=['POST', 'GET'])
 def index():
     # Take defaults as starting point
     context = default_context
