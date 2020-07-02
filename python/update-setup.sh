@@ -1,3 +1,4 @@
 #!/bin/zsh
 
 conda env export > environment.yml
+pip freeze > requirements.txt
