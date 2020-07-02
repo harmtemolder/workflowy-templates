@@ -63,6 +63,7 @@ def calendar_generator():
     context = add_month_names(context)
     context = add_day_names(context)
 
-    print(json.dumps(context, indent=4), file=sys.stderr)
+    if app.debug:
+        print(json.dumps(context, indent=4), file=sys.stderr)
 
     return render_template('index.html.jinja', context=context)
