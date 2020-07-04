@@ -17,6 +17,7 @@
     </script>
     <link rel="stylesheet" href="/styles/style.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="/scripts/ga-functions.js"></script>
     <script src="/scripts/form-functions.js"></script>
     <script src="/scripts/modal-functions.js"></script>
@@ -183,25 +184,92 @@
             </select>
             {{#equals week-format "number"}}<br /><span class="note">* Since week numbering varies between countries, I've decided to use <a href="https://en.wikipedia.org/wiki/ISO_week_date" target="_blank"> the ISO week date system</a>, which is part of <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601</a>. Basically, that means that (1) weeks start on Monday, (2) each year has either 52 or 53 weeks, (3) week 1 is the week in which the Gregorian year's first Thursday falls, (4) the last week of the year, either 52 or 53, is the week in which the Gregorian year's last Thursday falls</span>{{/equals}}
             <ul>
+              {{#equals week-format "number"}}
               <li {{#nequals week-format "number"}} class="disabled" {{/nequals}}>
                 <select name="week-number" {{#nequals week-format "number"}} disabled="disabled" {{/nequals}}>
-                  <option value="prefix" {{#equals day-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
-                  <option value="suffix" {{#equals day-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
-                  <option value="none" {{#equals day-number "none"}} selected="selected" {{/equals}}>without</option>
+                  <option value="prefix" {{#equals week-number "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
+                  <option value="suffix" {{#equals week-number "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
+                  <option value="none" {{#equals week-number "none"}} selected="selected" {{/equals}}>without</option>
                 </select>
                 "
                 <input type="text" class="mediumTextField" {{#nequals week-format "number"}} disabled="disabled" {{/nequals}} name="week-number-label" value="{{week-number-label}}" />
                 "
               </li>
+              {{/equals}}
+              {{#equals week-format "date"}}
               <li {{#nequals week-format "date"}} class="disabled" {{/nequals}}>
                 <select name="week-date" {{#nequals week-format "date"}} disabled="disabled" {{/nequals}}>
                   <option value="prefix" {{#equals week-date "prefix"}} selected="selected" {{/equals}}>prefixed with</option>
                   <option value="suffix" {{#equals week-date "suffix"}} selected="selected" {{/equals}}>suffixed with</option>
                   <option value="none" {{#equals week-date "none"}} selected="selected" {{/equals}}>without</option>
                 </select>
-                the month name, separated by "
-                <input type="text" class="shortTextField" {{#nequals week-format "date"}} disabled="disabled" {{/nequals}} name="week-date-separator" value="{{week-date-separator}}">
-                "
+                the month names formatted
+                {{#equals level-for-months "true"}} like the month names above{{/equals}}
+                {{#nequals level-for-months "true"}} as follows:
+                <ul>
+                  <li>
+                    In
+                    <select name="month-language">
+                      <option value="english" {{#equals month-language "english"}} selected="selected" {{/equals}}>English</option>
+                      <option value="dutch" {{#equals month-language "dutch"}} selected="selected" {{/equals}}>Dutch</option>
+                      <option value="custom" {{#equals month-language "custom"}} selected="selected" {{/equals}}>some other way</option>
+                    </select>
+                  </li>
+                  <li {{#equals month-language "custom"}} class="disabled" {{/equals}}>
+                    <select name="month-case" {{#equals month-language "custom"}} disabled="disabled" {{/equals}}>
+                      <option value="upper" {{#equals month-case "upper"}} selected="selected" {{/equals}}>UPPER CASE</option>
+                      <option value="lower" {{#equals month-case "lower"}} selected="selected" {{/equals}}>lower case</option>
+                      <option value="proper" {{#equals month-case "proper"}} selected="selected" {{/equals}}>Proper Case</option>
+                    </select>
+                  </li>
+                  <li>Like so:
+                    <ul>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-0" value="{{month-name-0}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-1" value="{{month-name-1}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-2" value="{{month-name-2}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-3" value="{{month-name-3}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-4" value="{{month-name-4}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+
+                        <input type="text" class="longTextField" name="month-name-5" value="{{month-name-5}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-6" value="{{month-name-6}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-7" value="{{month-name-7}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-8" value="{{month-name-8}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-9" value="{{month-name-9}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-10" value="{{month-name-10}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                      <li {{#nequals month-language "custom"}} class="disabled" {{/nequals}}>
+                        <input type="text" class="longTextField" name="month-name-11" value="{{month-name-11}}" {{#nequals month-language "custom"}} disabled="disabled" {{/nequals}}>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                  Separated by "
+                  <input type="text" class="shortTextField" {{#nequals week-format "date"}} disabled="disabled" {{/nequals}} name="week-date-separator" value="{{week-date-separator}}">
+                  "
+                  </li>
+                </ul>
+                {{/nequals}}
               </li>
             </ul>
             <ul class="nobullets {{#nequals week-format "date"}} disabled {{/nequals}}">
@@ -209,10 +277,11 @@
                 <div class="checkbox {{#nequals week-date-abbreviated "true"}} off {{/nequals}}"><input type="checkbox" id="week-date-abbreviated" name="week-date-abbreviated" value="true" {{#equals week-date-abbreviated "true"}} checked="checked" {{/equals}}>
                   <label for="week-date-abbreviated"></label>
                 </div>
-                abbreviated to only the first
+                And abbreviated to only the first
                 <input type="text" class="shortTextField" name="week-date-abbreviated-length" value="{{week-date-abbreviated-length}}" />
                 letters
               </li>
+              {{/equals}}
             </ul>
           </li>
           {{/equals}}
@@ -345,6 +414,9 @@
           </p>
         </div>
       </div>
+    </div>
+    <div id="label-container">
+      <a href="mailto:mail@harmtemolder.nl" target="_blank"><div id="feedback" class="label" data-toggle="tooltip" data-placement="left" data-html="true" title="Do you have any tips on how to improve the WorkFlow Calendar Generator? Don't hesitate to mail me using this button. <p class=&quot;signed&quot;>&mdash;Harm te Molder</p>">Feedback</div></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=mail%40harmtemolder.nl&item_name=WorkFlowy+Calendar+Generator&currency_code=EUR&source=url" target="_blank"><div id="donate" class="label" data-toggle="tooltip" data-placement="left" data-html="true" title="Did my tool help you out? Then consider helping me out by donating towards the monthly hosting costs using this button. How about €4? <strong>Thanks, you're awesome!</strong><p class=&quot;signed&quot;>&mdash;Harm te Molder</p>">Donate</div></a>
     </div>
   </body>
 

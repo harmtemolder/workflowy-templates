@@ -1,0 +1,489 @@
+@charset "utf-8";
+/* Colours */
+$text: rgb(255, 255, 255);
+$notes: rgb(158, 161, 162);
+$disabled: rgb(124, 127, 129);
+$close: rgb(92, 96, 98);
+$modal-background: rgb(66, 72, 75);
+$close-background: rgb(53, 60, 63);
+$toggle-enabled: rgb(51, 102, 119);
+$background: rgb(42, 49, 53);
+$selected: rgba(54, 102, 119, 0.9);
+$donate-label: rgb(255, 152, 0);
+$donate-label-hover: rgb(255, 182, 76);
+$feedback-label: rgb(0, 103, 255);
+$feedback-label-hover: rgb(76,148,255);
+
+* {
+  box-sizing: content-box;
+}
+
+body {
+  min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 15px;
+  font-weight: normal;
+  color: $text;
+  background: $background;
+}
+
+.page {
+  min-height: calc(100vh - 146px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: none;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 700px;
+  padding: 24px 60px;
+  margin-top: 72px;
+  margin-bottom: 24px;
+  text-size-adjust: none;
+  background: $background;
+  border-radius: 6px;
+}
+
+h1 {
+  font-size: 30px;
+  margin: 0 0 10px;
+}
+
+.note {
+  color: $notes;
+  white-space: pre-wrap;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding-top: 4px;
+}
+
+p.note {
+  font-size: 15px;
+  line-height: 24px;
+}
+
+li > .note {
+  font-size: 13px;
+  line-height: 17px;
+}
+
+ul {
+  list-style: none;
+  list-style-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='rgb(255, 255, 255)'><circle cx='12.5' cy='12.5' r='3.5'></circle></svg>");
+  padding-left: 24px;
+  margin: 0;
+}
+
+ul.nobullets {
+  list-style-image: none;
+}
+
+ul.disabled {
+  list-style-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='rgb(124, 127, 129)'><circle cx='12.5' cy='12.5' r='3.5'></circle></svg>");
+}
+
+li {
+  padding-top: 4px;
+}
+
+form {
+  margin: 0;
+}
+
+input,
+select {
+  font: inherit;
+  font-family: inherit;
+  color: $text;
+  background: $background;
+  border-width: 1px;
+  border-style: solid;
+  border-color: $notes;
+  border-image: initial;
+  border-radius: 5px;
+}
+
+input.shortTextField {
+  width: 2em;
+}
+
+input.mediumTextField {
+  width: 4em;
+}
+
+input.longTextField {
+  width: 8em;
+}
+
+input[type="checkbox"] {
+  visibility: hidden;
+}
+
+.checkbox {
+  // i.e. the background of the toggle switch
+  display: inline-block;
+  width: 20px;
+  height: 10px;
+  background: $toggle-enabled;
+  margin-right: 12px;
+  position: relative;
+  border-radius: 7px;
+  padding: 2px;
+  vertical-align: bottom;
+}
+
+.checkbox label {
+  // i.e. the actual toggle
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: $text;
+}
+
+.checkbox.off {
+  background: $disabled;
+}
+
+.checkbox input[type=checkbox]:checked + label {
+  transform: translateX(10px);
+}
+
+.disabled,
+input:disabled,
+select:disabled {
+  color: $disabled;
+  text-decoration: line-through;
+}
+
+a,
+input[type=submit].link {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: inline;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+
+a:hover,
+input[type=submit].link:hover {
+  color: $notes;
+}
+
+::-moz-selection {
+  /* Code for Firefox */
+  background: $selected;
+}
+
+::selection {
+  background: $selected;
+}
+
+#modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  -webkit-box-pack: center;
+  z-index: 2;
+}
+
+#modal-darken {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  -webkit-box-align: center;
+  justify-content: center;
+  -webkit-box-pack: center;
+  opacity: 0.2;
+  background: rgb(0, 0, 0);
+  transition: opacity 300ms ease 0s;
+  z-index: 3;
+}
+
+#warning-modal {
+  position: relative;
+  margin-top: 10vh;
+  max-height: calc(100% - 20vh);
+  width: calc((100% - 36px) - 36px);
+  flex-shrink: 0;
+  box-sizing: border-box;
+  max-width: 576px;
+  color: $text;
+  box-shadow: rgba(0, 0, 0, 0.12) 0 2px 20px;
+  padding: 36px;
+  overflow: auto;
+  background: $background;
+  border-radius: 6px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: $close;
+  transition: transform 300ms ease 0s, opacity 300ms ease 0s;
+  z-index: 4;
+}
+
+.modal-close {
+  color: $close;
+  // font-size: 12px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-box-align: center;
+  justify-content: center;
+  -webkit-box-pack: center;
+  position: absolute;
+  top: 36px;
+  right: 36px;
+  border-radius: 10px;
+}
+
+.modal-close:hover > .modal-close-hover {
+  display: inherit;
+}
+
+.modal-close-hover {
+  display: none;
+  background: $close-background;
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  top: 50%;
+  left: 50%;
+  margin-top: -18px;
+  margin-left: -18px;
+  border-radius: 18px;
+  z-index: 1;
+}
+
+.modal-close > svg {
+  z-index: 2;
+}
+
+.modal-button {
+  display: inline-block;
+  position: relative;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  // line-height: 16px;
+  padding: 4px 12px;
+  margin-left: 0;
+  color: $text;
+  // font-family: inherit;
+  // font-weight: 500;
+  // font-size: 12px;
+  text-align: center;
+  // cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  outline: none;
+  border-radius: 12px;
+  background: $modal-background;
+  text-decoration: none;
+}
+
+.centered {
+  text-align: center;
+}
+
+.signed {
+  text-align: right;
+}
+
+/* Labels */
+#label-container {
+  height: 1em;
+  margin: auto;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  -webkit-transform-origin: 100% 50%;
+  -moz-transform-origin: 100% 50%;
+  -ms-transform-origin: 100% 50%;
+  -o-transform-origin: 100% 50%;
+  transform-origin: 100% 50%;
+  -webkit-transform: rotate(90deg) translate(50%, 50%);
+  -moz-transform: rotate(90deg) translate(50%, 50%);
+  -ms-transform: rotate(90deg) translate(50%, 50%);
+  -o-transform: rotate(90deg) translate(50%, 50%);
+  transform: rotate(90deg) translate(50%, 50%);
+}
+
+.label {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: $text;
+  background: $modal-background;
+  margin: 0 4px;
+  display: inline-block;
+  padding: 8px;
+}
+
+#label-container a, #label-container a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+#donate {
+  background: $donate-label;
+}
+
+#donate:hover {
+  background: $donate-label-hover;
+}
+
+#feedback {
+  background: $feedback-label;
+}
+
+#feedback:hover {
+  background: $feedback-label-hover;
+}
+
+/* Bootstrap4 Tooltips */
+.tooltip {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  margin: 0;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  text-align: start;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-break: normal;
+  word-spacing: normal;
+  white-space: normal;
+  line-break: auto;
+  font-size: 0.875rem;
+  word-wrap: break-word;
+  opacity: 0;
+}
+
+.tooltip.show {
+  opacity: 0.9;
+}
+
+.tooltip .arrow {
+  position: absolute;
+  display: block;
+  width: 0.8rem;
+  height: 0.4rem;
+}
+
+.tooltip .arrow::before {
+  position: absolute;
+  content: "";
+  border-color: transparent;
+  border-style: solid;
+}
+
+.bs-tooltip-auto[x-placement^=top],
+.bs-tooltip-top {
+  padding: 0.4rem 0;
+}
+
+.bs-tooltip-auto[x-placement^=top] .arrow,
+.bs-tooltip-top .arrow {
+  bottom: 0;
+}
+
+.bs-tooltip-auto[x-placement^=top] .arrow::before,
+.bs-tooltip-top .arrow::before {
+  top: 0;
+  border-width: 0.4rem 0.4rem 0;
+  border-top-color: $modal-background;
+}
+
+.bs-tooltip-auto[x-placement^=right],
+.bs-tooltip-right {
+  padding: 0 0.4rem;
+}
+
+.bs-tooltip-auto[x-placement^=right] .arrow,
+.bs-tooltip-right .arrow {
+  left: 0;
+  width: 0.4rem;
+  height: 0.8rem;
+}
+
+.bs-tooltip-auto[x-placement^=right] .arrow::before,
+.bs-tooltip-right .arrow::before {
+  right: 0;
+  border-width: 0.4rem 0.4rem 0.4rem 0;
+  border-right-color: $modal-background;
+}
+
+.bs-tooltip-auto[x-placement^=bottom],
+.bs-tooltip-bottom {
+  padding: 0.4rem 0;
+}
+
+.bs-tooltip-auto[x-placement^=bottom] .arrow,
+.bs-tooltip-bottom .arrow {
+  top: 0;
+}
+
+.bs-tooltip-auto[x-placement^=bottom] .arrow::before,
+.bs-tooltip-bottom .arrow::before {
+  bottom: 0;
+  border-width: 0 0.4rem 0.4rem;
+  border-bottom-color: $modal-background;
+}
+
+.bs-tooltip-auto[x-placement^=left],
+.bs-tooltip-left {
+  padding: 0 0.4rem;
+}
+
+.bs-tooltip-auto[x-placement^=left] .arrow,
+.bs-tooltip-left .arrow {
+  right: 0;
+  width: 0.4rem;
+  height: 0.8rem;
+}
+
+.bs-tooltip-auto[x-placement^=left] .arrow::before,
+.bs-tooltip-left .arrow::before {
+  left: 0;
+  border-width: 0.4rem 0 0.4rem 0.4rem;
+  border-left-color: $modal-background;
+}
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: left;
+  background-color: $modal-background;
+  border-radius: 0.25rem;
+}

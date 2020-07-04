@@ -37,7 +37,7 @@ function generateCalendar(context) {
     // '01–07') where (1) the first is the date's week's Monday, or '01' if the
     // Monday doesn't fall in the date's month and (2) the second is the date's
     // week's Sunday, or the last day of the month if the Sunday doesn't fall in
-    // the date's month. The two numers are separated by the given separator
+    // the date's month. The two numbers are separated by the given separator
 
     // Get current date's week's Monday and Sunday
     const monday = date.clone().startOf('isoWeek');
