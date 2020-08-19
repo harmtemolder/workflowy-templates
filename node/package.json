@@ -10,14 +10,16 @@
     "debug": "nodemon --inspect index.js",
     "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save"
   },
-  "keywords": ["workflowy"],
+  "keywords": [
+    "workflowy"
+  ],
   "author": "Harm te Molder",
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "body-parser": "*",
     "express": "*",
     "handlebars": "*",
-    "helmet-csp": "*",
+    "helmet-csp": "^3.1.0",
     "html-entities": "*",
     "moment": "*",
     "node-sass-middleware": "*"
