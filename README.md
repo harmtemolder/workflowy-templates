@@ -20,3 +20,5 @@ This tool helps you generate a list for a given period of time.
 
 ## Troubleshooting
 * If you're having trouble pasting in Firefox, try in Chrome
+* If GitHub keeps nagging you on potential security vulnerabilities, run `npm run update:packages` to force update all node packages to their latest versions
+
